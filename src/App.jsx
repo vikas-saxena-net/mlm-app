@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <main className="flex-1">
