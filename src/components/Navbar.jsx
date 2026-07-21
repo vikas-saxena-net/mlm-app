@@ -54,9 +54,19 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           <NavLink
-            to="/contact"
+            to="/login"
+            className={({ isActive }) =>
+              `text-sm font-semibold tracking-wide transition-colors ${
+                isActive ? "text-brand-orange" : "text-brand-ink hover:text-brand-orange"
+              }`
+            }
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to="/join"
             className="inline-flex items-center gap-2 rounded-full bg-brand-green px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-green-dark"
           >
             Join Free
@@ -92,7 +102,18 @@ export default function Navbar() {
               </NavLink>
             ))}
             <NavLink
-              to="/contact"
+              to="/login"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-3 text-sm font-semibold ${
+                  isActive ? "bg-orange-50 text-brand-orange" : "text-brand-ink"
+                }`
+              }
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/join"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-bold text-white"
             >

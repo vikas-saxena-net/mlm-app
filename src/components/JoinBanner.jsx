@@ -13,7 +13,7 @@ export default function JoinBanner() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            to="/contact"
+            to="/join"
             className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold text-brand-ink shadow-lg transition hover:-translate-y-0.5"
           >
             Join Free Now

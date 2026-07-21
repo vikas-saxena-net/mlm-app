@@ -7,6 +7,8 @@ import Products from "./pages/Products";
 import BusinessPlan from "./pages/BusinessPlan";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Join from "./pages/Join";
+import Login from "./pages/Login";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,6 +31,8 @@ export default function App() {
             <Route path="/business-plan" element={<BusinessPlan />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
         <Footer />

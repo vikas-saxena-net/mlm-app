@@ -24,7 +24,7 @@ export default function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              to="/contact"
+              to="/join"
               className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-7 py-3.5 font-bold text-white shadow-lg shadow-orange-500/20 transition hover:bg-brand-orange-dark"
             >
               Join Free Today
