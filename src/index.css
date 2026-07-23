@@ -30,6 +30,20 @@ h1, h2, h3, h4 {
   background: linear-gradient(90deg, var(--color-brand-orange) 0 33%, #e5e7eb 33% 66%, var(--color-brand-green) 66% 100%);
 }
 
+/* Content (paragraph) text bumped +2pt — headings, stat numbers and UI chrome untouched */
+p.text-xs:not(.font-bold):not(.font-semibold):not(.font-extrabold) {
+  font-size: calc(0.75rem + 2pt) !important;
+}
+p.text-sm:not(.font-bold):not(.font-semibold):not(.font-extrabold) {
+  font-size: calc(0.875rem + 2pt) !important;
+}
+p.text-base:not(.font-bold):not(.font-semibold):not(.font-extrabold) {
+  font-size: calc(1rem + 2pt) !important;
+}
+p.text-lg:not(.font-bold):not(.font-semibold):not(.font-extrabold) {
+  font-size: calc(1.125rem + 2pt) !important;
+}
+
 .section-title::after {
   content: "";
   display: block;

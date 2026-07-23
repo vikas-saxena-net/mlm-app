@@ -15,7 +15,7 @@ export default function About() {
     <div>
       <section className="bg-gradient-to-br from-orange-50 to-green-50 py-16">
         <div className="max-w-5xl mx-auto px-4 md:px-8 text-center">
-          <img src={logo} alt="HIO Health" className="h-20 w-auto mx-auto object-contain" />
+          <img src={logo} alt="HIO Health" className="h-28 w-auto mx-auto object-contain" />
           <h1 className="mt-6 text-4xl md:text-5xl font-extrabold text-brand-ink">About HIO Health</h1>
           <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
             HIO Health Pvt. Ltd. is a direct-selling company bringing natural Health Care, Personal Care and Agri

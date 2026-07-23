@@ -18,7 +18,7 @@ export default function Login() {
     <section className="flex min-h-[75vh] items-center justify-center bg-gradient-to-br from-orange-50 to-green-50 px-4 py-16">
       <div className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-8 shadow-lg">
         <div className="flex flex-col items-center text-center">
-          <img src={logo} alt="HIO Health" className="h-16 w-auto object-contain" />
+          <img src={logo} alt="HIO Health" className="h-20 w-auto object-contain" />
           <h1 className="mt-4 text-2xl font-extrabold text-brand-ink">Member Login</h1>
           <p className="mt-1 text-sm text-slate-500">Sign in to access your HIO Health dashboard.</p>
         </div>

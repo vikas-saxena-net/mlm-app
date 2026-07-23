@@ -8,8 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5104",
+        target: "https://api.hlohealth.in",
         changeOrigin: true,
+        secure: true,
       },
     },
   },

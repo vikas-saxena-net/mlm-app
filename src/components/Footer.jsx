@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="bg-brand-ink text-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <img src={logo} alt="HIO Health" className="h-16 w-auto object-contain bg-white rounded-lg p-2" />
+          <img src={logo} alt="HIO Health" className="h-20 w-auto object-contain bg-white rounded-lg p-2" />
           <p className="mt-4 text-sm text-white/70 leading-relaxed">
             Be Healthy. We Wealthy. We Happy. Achieve Your Dreams — with Health Care, Personal Care & Agri Care
             products and a rewarding business plan.

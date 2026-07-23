@@ -32,9 +32,9 @@ export default function Navbar() {
       }`}
     >
       <div className="tricolor-bar h-1 w-full" />
-      <nav className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-20">
+      <nav className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-24">
         <NavLink to="/" className="flex items-center gap-2 shrink-0" onClick={() => setOpen(false)}>
-          <img src={logo} alt="HIO Health" className="h-14 w-auto object-contain" />
+          <img src={logo} alt="HIO Health" className="h-20 w-auto object-contain" />
         </NavLink>
 
         <div className="hidden lg:flex items-center gap-8">
