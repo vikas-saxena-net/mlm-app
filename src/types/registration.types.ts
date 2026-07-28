@@ -63,6 +63,8 @@ export interface CreateUserRegistrationRequest {
   city?: string;
   pincode?: string;
   updatedBy?: string;
+  role_guid: string;
+  status_guid: string;
 }
 
 export interface DuplicateFieldState {

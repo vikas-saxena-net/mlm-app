@@ -26,12 +26,17 @@ export default function SponsorSection({
   });
 
   return (
-    <SectionCard step={1} title="Sponsor Information" subtitle="Enter the referring member's Sponsor ID">
+    <SectionCard
+      step={1}
+      title="Sponsor Information"
+      subtitle="Enter the referring member's Sponsor ID, if you have one"
+      optional
+    >
       <div className="sm:col-span-2 sm:max-w-sm">
         <FormInput
           label="Sponsor ID"
-          required
-          placeholder="Enter Sponsor ID"
+          placeholder="Enter Sponsor ID (optional)"
+          hint="Leave blank if you don't have a sponsor"
           error={sponsorState.error || errors.sponsorId?.message}
           {...sponsorIdField}
           onChange={(e) => {

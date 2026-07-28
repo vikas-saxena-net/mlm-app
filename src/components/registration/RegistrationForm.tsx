@@ -93,8 +93,9 @@ export default function RegistrationForm() {
   };
 
   const onSubmit = async (values: RegistrationSchemaType) => {
-    if (!sponsor.state.verified || !sponsor.state.sponsorGuid) {
-      toast.error("Please verify a valid Sponsor ID before submitting.");
+    const sponsorIdEntered = values.sponsorId.trim().length > 0;
+    if (sponsorIdEntered && !sponsor.state.verified) {
+      toast.error("Please verify the Sponsor ID before submitting, or leave it blank.");
       return;
     }
     if (usernameDup.status.isDuplicate) {
@@ -112,7 +113,7 @@ export default function RegistrationForm() {
 
     setIsRegistering(true);
     try {
-      const payload = mapToRegistrationPayload(values, sponsor.state.sponsorGuid);
+      const payload = mapToRegistrationPayload(values, sponsor.state.sponsorGuid ?? undefined);
       await registerUser(payload);
       toast.success("Registration successful!");
       setRegisteredUsername(values.username);

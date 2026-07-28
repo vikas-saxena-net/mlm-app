@@ -21,7 +21,7 @@ export function isMobileFormatValid(value: string): boolean {
 
 export const registrationSchema = z
   .object({
-    sponsorId: z.string().trim().min(1, "Sponsor ID is required"),
+    sponsorId: z.string().trim(),
 
     username: z
       .string()
