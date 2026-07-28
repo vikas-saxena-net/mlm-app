@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "./Icon";
-import product from "../assets/img/product.png";
+import HeroProductSlider from "./HeroProductSlider";
 
 export default function Hero() {
   return (
@@ -45,14 +45,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative flex justify-center">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-200/50 to-green-200/50 blur-2xl scale-90" />
-          <img
-            src={product}
-            alt="HIO Health ReGen Kaya nutraceutical capsules"
-            className="relative w-full max-w-md drop-shadow-2xl"
-          />
-        </div>
+        <HeroProductSlider />
       </div>
     </section>
   );

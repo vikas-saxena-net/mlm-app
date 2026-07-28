@@ -74,7 +74,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <SectionHeading
             eyebrow="Earning Opportunities"
-            title="10 Ways to Earn with HIO Health"
+            title="10 Ways to Earn with HLO Health & 5 Extra Income and Rewards"
             subtitle="A complete rewards ecosystem — from your very first sale to royalty on company turnover."
             align="center"
           />
