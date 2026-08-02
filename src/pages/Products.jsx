@@ -62,7 +62,7 @@ export default function Products() {
           <SectionHeading
             eyebrow="Featured Products"
             title="Explore Our Range"
-            subtitle="Pricing shown is Distributor Price (DP) and Distributor Value (DV)."
+            subtitle="Pricing shown is Distributor Price (DP) and Business Volume (BV)."
             align="center"
           />
           <div className="mt-12 space-y-10">

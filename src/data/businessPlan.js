@@ -14,7 +14,7 @@ export const incomeTypes = [
   {
     key: "matching",
     title: "Matching Income",
-    range: "₹200 / pair",
+    range: "200 / pair",
     icon: "pair",
     description: "Grow your team in a 1:1 binary (Left / Right) and earn every time both legs match.",
   },
@@ -35,28 +35,28 @@ export const incomeTypes = [
   {
     key: "car",
     title: "Car Fund",
-    range: "₹200 - ₹500 / pt",
+    range: "200 - 500 / pt",
     icon: "car",
     description: "Unlocked after Red Cross rank. Drive home your dream car on the company.",
   },
   {
     key: "travel",
     title: "Travel Fund",
-    range: "₹1,000 - ₹2,000 / pt",
+    range: "1,000 - 2,000 / pt",
     icon: "plane",
     description: "Unlocked after Blue Cross rank. Explore the world with fully sponsored trips.",
   },
   {
     key: "leadership",
     title: "Leadership Fund",
-    range: "₹2,500 - ₹4,000 / pt",
+    range: "2,500 - 4,000 / pt",
     icon: "flag",
     description: "Unlocked after Lead Lord rank, rewarding leaders who build strong teams.",
   },
   {
     key: "grahini",
     title: "Grahini Fund",
-    range: "₹3,000 - ₹4,000 / pt",
+    range: "3,000 - 4,000 / pt",
     icon: "heart",
     description: "Unlocked after Begum rank — a special reward fund celebrating home-makers.",
   },
@@ -103,7 +103,7 @@ export const rankFunds = [
     selfBv: "30,000",
     teamBv: "1,50,000",
     pointRule: "1,000 : 1,000 = 1 CF Point",
-    pointValue: "₹200 - ₹500 per point",
+    pointValue: "200 - 500 per point",
     note: "Maximum earning: 30 point distribution CTO BV",
   },
   {
@@ -111,10 +111,10 @@ export const rankFunds = [
     title: "Travel Fund",
     icon: "plane",
     unlockedAfter: "Blue Cross",
-    selfBv: "6,000",
+    selfBv: "60,000",
     teamBv: "6,00,000",
     pointRule: "6,000 : 6,000 = 1 TF Point",
-    pointValue: "₹1,000 - ₹2,000 per point",
+    pointValue: "1,000 - 2,000 per point",
     note: "Maximum earning: 30 point distribution CTO BV",
   },
   {
@@ -125,7 +125,7 @@ export const rankFunds = [
     selfBv: "1,20,000",
     teamBv: "24,00,000",
     pointRule: "16,000 : 16,000 = 1 LF Point",
-    pointValue: "₹2,500 - ₹4,000 per point",
+    pointValue: "2,500 - 4,000 per point",
     note: "Maximum earning: 30 point distribution CTO BV",
   },
   {
@@ -136,7 +136,7 @@ export const rankFunds = [
     selfBv: "2,40,000",
     teamBv: "96,00,000",
     pointRule: "20,000 : 20,000 = 1 GF Point",
-    pointValue: "₹3,000 - ₹4,000 per point",
+    pointValue: "3,000 - 4,000 per point",
     note: "Maximum earning: 30 point distribution CTO BV",
   },
   {
@@ -170,7 +170,7 @@ export const extraRewards = [
   },
   {
     title: "Monthly Single ID Billing Rewards",
-    description: "₹10,000 purchase = 5% extra product · ₹1,00,000 purchase = 10% extra product · ₹5,00,000 purchase = 20% extra product.",
+    description: "10,000 purchase = 5% extra product · 1,00,000 purchase = 10% extra product · 5,00,000 purchase = 20% extra product.",
   },
   {
     title: "Bulk Purchase Reward",
@@ -178,14 +178,14 @@ export const extraRewards = [
   },
   {
     title: "Self Business Vehicle Support",
-    description: "₹2.5 Lakh self business = ₹50,000 down payment support for an OLA Electric Scooter. ₹5 Lakh self business = ₹1.25 Lakh down payment support for an Alto CNG.",
+    description: "2.5 Lakh self business = 50,000 down payment support for an OLA Electric Scooter. 5 Lakh self business = 1.25 Lakh down payment support for an Alto CNG.",
   },
 ];
 
 export const termsAndConditions = [
   "Monthly closing on the 28th of every month.",
   "Payout on the 2nd of every month.",
-  "Minimum withdrawal amount ₹500/-.",
+  "Minimum withdrawal amount 500/-.",
   "TDS 3.75% & Admin Charge 3.75% applicable on payouts.",
 ];
 

@@ -35,11 +35,11 @@ export default function ProductShowcase({ product, index }) {
         <div className="mt-5 grid grid-cols-2 gap-3 max-w-xs">
           <div className="rounded-xl bg-orange-50 py-3 text-center">
             <p className="text-[11px] uppercase tracking-wide text-slate-500">DP</p>
-            <p className="text-lg font-extrabold text-brand-orange">₹{product.dpValue}</p>
+            <p className="text-lg font-extrabold text-brand-orange">{product.dpValue}</p>
           </div>
           <div className="rounded-xl bg-green-50 py-3 text-center">
-            <p className="text-[11px] uppercase tracking-wide text-slate-500">DV</p>
-            <p className="text-lg font-extrabold text-brand-green">{product.dvValue}</p>
+            <p className="text-[11px] uppercase tracking-wide text-slate-500">BV</p>
+            <p className="text-lg font-extrabold text-brand-green">{product.bvValue}</p>
           </div>
         </div>
 

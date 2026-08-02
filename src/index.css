@@ -44,6 +44,44 @@ p.text-lg:not(.font-bold):not(.font-semibold):not(.font-extrabold) {
   font-size: calc(1.125rem + 2pt) !important;
 }
 
+/* Google Translate widget — keep required attribution, but small/muted; style the <select> to match the site */
+iframe.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+#google_translate_element .goog-te-gadget {
+  font-family: var(--font-body);
+  font-size: 10px !important;
+  color: #94a3b8 !important;
+  line-height: 1.2;
+}
+#google_translate_element .goog-te-gadget > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+#google_translate_element .goog-te-combo {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: 12px !important;
+  font-weight: 700;
+  color: var(--color-brand-ink);
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  max-width: 140px;
+}
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
 .section-title::after {
   content: "";
   display: block;

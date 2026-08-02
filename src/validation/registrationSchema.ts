@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { calculateAge } from "../utils/date";
+import { isValidAadhaarNumber } from "../utils/aadhaar";
+import { isValidPanNumber } from "../utils/pan";
 import { GENDER_OPTIONS } from "../types/registration.types";
 
 export const usernameRegex = /^[a-zA-Z0-9_]+$/;
@@ -65,6 +67,22 @@ export const registrationSchema = z
       }),
 
     fatherName: z.string().trim().min(1, "Father's name is required"),
+
+    aadharNumber: z
+      .string()
+      .trim()
+      .min(1, "Aadhaar number is required")
+      .regex(/^[0-9]{12}$/, "Aadhaar number must be exactly 12 digits")
+      .refine((value) => isValidAadhaarNumber(value), {
+        message: "Enter a valid Aadhaar number",
+      }),
+
+    pancardNumber: z
+      .string()
+      .trim()
+      .refine((value) => value === "" || isValidPanNumber(value), {
+        message: "Enter a valid PAN number (e.g. ABCDE1234F)",
+      }),
 
     address1: z.string().trim(),
     address2: z.string().trim(),

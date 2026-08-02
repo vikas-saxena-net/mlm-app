@@ -83,7 +83,7 @@ export default function BusinessPlan() {
           <div className="mt-8">
             <DataTable
               columns={["Self BV", "Team BV", "Income Rate"]}
-              rows={repurchaseIncomeTable.map((r) => [`₹${r.selfBv.toLocaleString("en-IN")}`, `₹${r.teamBv.toLocaleString("en-IN")}`, r.rate])}
+              rows={repurchaseIncomeTable.map((r) => [r.selfBv.toLocaleString("en-IN"), r.teamBv.toLocaleString("en-IN"), r.rate])}
             />
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function BusinessPlan() {
           <div className="mt-8">
             <DataTable
               columns={["Self + Sponsor Repurchase", "Bonus Rate"]}
-              rows={monthlyBonusTable.map((r) => [`₹${r.combined.toLocaleString("en-IN")}`, r.rate])}
+              rows={monthlyBonusTable.map((r) => [r.combined.toLocaleString("en-IN"), r.rate])}
             />
           </div>
         </div>

@@ -2,10 +2,14 @@ import httpClient from "./api/httpClient";
 import { unwrapApiResponse } from "../utils/apiResponse";
 import type {
   ApiResponse,
+  CityListItem,
+  CreateCityRequest,
+  CreateStateRequest,
   DuplicateCheckField,
   DuplicateCheckResponse,
   LookupOption,
   RawLookupItem,
+  StateListItem,
   UserDetailsResponse,
 } from "../types/registration.types";
 
@@ -50,4 +54,34 @@ export async function getCities(stateGuid: string): Promise<LookupOption[]> {
     `/shared/cities/${encodeURIComponent(stateGuid)}`
   );
   return toLookupOptions(unwrapApiResponse(response.data));
+}
+
+export async function createState(payload: CreateStateRequest): Promise<string> {
+  const response = await httpClient.post<ApiResponse<string>>("/shared/states", payload);
+  return unwrapApiResponse(response.data);
+}
+
+export async function createCity(payload: CreateCityRequest): Promise<string> {
+  const response = await httpClient.post<ApiResponse<string>>("/shared/cities", payload);
+  return unwrapApiResponse(response.data);
+}
+
+export async function getAllStates(): Promise<StateListItem[]> {
+  const response = await httpClient.get<ApiResponse<StateListItem[]>>("/shared/states");
+  return unwrapApiResponse(response.data) ?? [];
+}
+
+export async function getAllCities(): Promise<CityListItem[]> {
+  const response = await httpClient.get<ApiResponse<CityListItem[]>>("/shared/cities");
+  return unwrapApiResponse(response.data) ?? [];
+}
+
+export async function deleteState(guid: string): Promise<unknown> {
+  const response = await httpClient.delete<ApiResponse<unknown>>(`/shared/states/${encodeURIComponent(guid)}`);
+  return unwrapApiResponse(response.data);
+}
+
+export async function deleteCity(guid: string): Promise<unknown> {
+  const response = await httpClient.delete<ApiResponse<unknown>>(`/shared/cities/${encodeURIComponent(guid)}`);
+  return unwrapApiResponse(response.data);
 }

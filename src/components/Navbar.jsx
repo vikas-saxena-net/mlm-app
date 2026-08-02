@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.jpeg";
 import Icon from "./Icon";
+import GoogleTranslate from "./GoogleTranslate";
+import { useAuth } from "../contexts/AuthContext";
 
 const links = [
   { to: "/", label: "Home" },
@@ -14,6 +16,15 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isAuthenticated, role, logout } = useAuth();
+  const navigate = useNavigate();
+  const accountPath = role === "admin" ? "/admin" : "/dashboard";
+
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate("/login");
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -55,32 +66,59 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-4">
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              `text-sm font-semibold tracking-wide transition-colors ${
-                isActive ? "text-brand-orange" : "text-brand-ink hover:text-brand-orange"
-              }`
-            }
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/join"
-            className="inline-flex items-center gap-2 rounded-full bg-brand-green px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-green-dark"
-          >
-            Join Free
-            <Icon name="arrowRight" className="w-4 h-4" />
-          </NavLink>
+          {isAuthenticated ? (
+            <>
+              <NavLink
+                to={accountPath}
+                className={({ isActive }) =>
+                  `text-sm font-semibold tracking-wide transition-colors ${
+                    isActive ? "text-brand-orange" : "text-brand-ink hover:text-brand-orange"
+                  }`
+                }
+              >
+                {role === "admin" ? "Admin Panel" : "My Account"}
+              </NavLink>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-full bg-brand-green px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-green-dark"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `text-sm font-semibold tracking-wide transition-colors ${
+                    isActive ? "text-brand-orange" : "text-brand-ink hover:text-brand-orange"
+                  }`
+                }
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/join"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-green px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-green-dark"
+              >
+                Join Free
+                <Icon name="arrowRight" className="w-4 h-4" />
+              </NavLink>
+            </>
+          )}
         </div>
 
-        <button
-          className="lg:hidden p-2 text-brand-ink"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          <Icon name={open ? "close" : "menu"} className="w-7 h-7" />
-        </button>
+        <div className="flex items-center gap-2 lg:gap-4">
+          <GoogleTranslate />
+          <button
+            className="lg:hidden p-2 text-brand-ink"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            <Icon name={open ? "close" : "menu"} className="w-7 h-7" />
+          </button>
+        </div>
       </nav>
 
       {open && (
@@ -101,25 +139,50 @@ export default function Navbar() {
                 {link.label}
               </NavLink>
             ))}
-            <NavLink
-              to="/login"
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `rounded-lg px-3 py-3 text-sm font-semibold ${
-                  isActive ? "bg-orange-50 text-brand-orange" : "text-brand-ink"
-                }`
-              }
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/join"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-bold text-white"
-            >
-              Join Free
-              <Icon name="arrowRight" className="w-4 h-4" />
-            </NavLink>
+            {isAuthenticated ? (
+              <>
+                <NavLink
+                  to={accountPath}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-3 text-sm font-semibold ${
+                      isActive ? "bg-orange-50 text-brand-orange" : "text-brand-ink"
+                    }`
+                  }
+                >
+                  {role === "admin" ? "Admin Panel" : "My Account"}
+                </NavLink>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-bold text-white"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-3 text-sm font-semibold ${
+                      isActive ? "bg-orange-50 text-brand-orange" : "text-brand-ink"
+                    }`
+                  }
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/join"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-bold text-white"
+                >
+                  Join Free
+                  <Icon name="arrowRight" className="w-4 h-4" />
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       )}

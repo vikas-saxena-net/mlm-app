@@ -37,6 +37,8 @@ const defaultValues: RegistrationSchemaType = {
   gender: "",
   dob: "",
   fatherName: "",
+  aadharNumber: "",
+  pancardNumber: "",
   address1: "",
   address2: "",
   country: "",

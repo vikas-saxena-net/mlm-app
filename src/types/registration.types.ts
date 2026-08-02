@@ -41,6 +41,32 @@ export interface RawLookupItem {
   code: string | null;
 }
 
+export interface StateListItem {
+  guid: string;
+  name: string | null;
+  code: string | null;
+  countryGuid: string;
+}
+
+export interface CityListItem {
+  guid: string;
+  name: string | null;
+  code: string | null;
+  stateGuid: string;
+}
+
+export interface CreateStateRequest {
+  name: string;
+  code?: string;
+  countryGuid: string;
+}
+
+export interface CreateCityRequest {
+  name: string;
+  code?: string;
+  stateGuid: string;
+}
+
 /** Maps 1:1 to CreateUserRegistrationRequest on the API. */
 export interface CreateUserRegistrationRequest {
   userName: string;
@@ -56,6 +82,8 @@ export interface CreateUserRegistrationRequest {
   gender: string;
   dob: string;
   fatherName: string;
+  aadhar: string;
+  pancard?: string;
   address1?: string;
   address2?: string;
   country?: string;
@@ -65,6 +93,74 @@ export interface CreateUserRegistrationRequest {
   updatedBy?: string;
   role_guid: string;
   status_guid: string;
+}
+
+/** Maps 1:1 to UpdateUserRegistrationRequest on the API — PUT /api/user-registration/{usersGuid} */
+export interface UpdateUserRegistrationRequest {
+  sponsorGuid?: string;
+  position?: string;
+  userFirstName: string;
+  userLastName: string;
+  emailId: string;
+  emailVerify: boolean;
+  mobileNumber: number;
+  mobileVerify?: boolean;
+  gender: string;
+  dob: string;
+  fatherName: string;
+  aadhar?: string;
+  pancard?: string;
+  address1?: string;
+  address2?: string;
+  country?: string;
+  state?: string;
+  city?: string;
+  pincode?: string;
+  updatedBy?: string;
+  role_guid?: string;
+  status_guid?: string;
+}
+
+/** Shape of GET /api/user-registration/editprofile/{usersGuid} -> data */
+export interface UserRegistrationResponse {
+  usersGuid: string | null;
+  userName: string | null;
+  sponsorGuid: string | null;
+  position: string | null;
+  userFirstName: string | null;
+  userLastName: string | null;
+  emailId: string | null;
+  emailVerify: boolean;
+  mobileNumber: number;
+  mobileVerify: boolean;
+  gender: string | null;
+  dob: string;
+  fatherName: string | null;
+  address1: string | null;
+  address2: string | null;
+  country: string | null;
+  state: string | null;
+  city: string | null;
+  pincode: string | null;
+  status: string | null;
+  role_guid: string | null;
+  status_guid: string | null;
+  aadhar: string | null;
+  aadhar_front: string | null;
+  aadhar_back: string | null;
+  pancard: string | null;
+  pancard_url: string | null;
+  updatedBy: string | null;
+  createdDate: string;
+  updatedDate: string;
+}
+
+/** Shape of POST /api/users/upload-documents -> data */
+export interface UploadDocumentsResponse {
+  user_name: string | null;
+  aadhar_front: string | null;
+  aadhar_back: string | null;
+  pancard_url: string | null;
 }
 
 export interface DuplicateFieldState {

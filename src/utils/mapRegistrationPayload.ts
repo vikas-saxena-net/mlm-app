@@ -22,6 +22,8 @@ export function mapToRegistrationPayload(
     gender: formValues.gender,
     dob: formValues.dob,
     fatherName: formValues.fatherName.trim(),
+    aadhar: formValues.aadharNumber.trim(),
+    pancard: formValues.pancardNumber?.trim().toUpperCase() || undefined,
     address1: formValues.address1?.trim() || undefined,
     address2: formValues.address2?.trim() || undefined,
     country: formValues.country || undefined,

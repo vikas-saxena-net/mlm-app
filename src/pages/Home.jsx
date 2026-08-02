@@ -55,7 +55,7 @@ export default function Home() {
                 <Icon name="check" className="w-4 h-4 text-brand-green shrink-0" /> Full activation at 1200 BV
               </li>
               <li className="flex items-center gap-2">
-                <Icon name="check" className="w-4 h-4 text-brand-green shrink-0" /> ₹200 matching income per pair
+                <Icon name="check" className="w-4 h-4 text-brand-green shrink-0" /> 200 matching income per pair
               </li>
             </ul>
             <Link

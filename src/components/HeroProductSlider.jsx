@@ -44,10 +44,10 @@ export default function HeroProductSlider({ autoPlayMs = 4500 }) {
             </div>
             <div className="flex shrink-0 gap-1.5">
               <span className="rounded-md bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-600">
-                DP&nbsp;<span className="text-brand-ink">₹{product.dpValue}</span>
+                DP&nbsp;<span className="text-brand-ink">{product.dpValue}</span>
               </span>
               <span className="rounded-md bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-600">
-                DV&nbsp;<span className="text-brand-ink">{product.dvValue}</span>
+                BV&nbsp;<span className="text-brand-ink">{product.bvValue}</span>
               </span>
             </div>
           </div>

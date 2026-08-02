@@ -6,7 +6,7 @@
     "size": "1 Litre",
     "image": "/products/regen-kaya-juice.png",
     "dpValue": 1499,
-    "dvValue": 600,
+    "bvValue": 600,
     "description": "A pure Ayurvedic herbal juice made with raw turmeric (Haldi), ginger (Adrak), aloe vera, wheat grass and neem leaf. Better food is the foundation of better health — this juice is intended to support overall wellness and healthy metabolism as a daily dietary supplement, not to diagnose, treat, cure or prevent any disease.",
     "benefits": [
       "Keeps skin, hair and nails healthy, giving the body a more radiant look",
@@ -29,7 +29,7 @@
     "size": "120 Capsules",
     "image": "/products/regen-kaya-capsules.png",
     "dpValue": 1399,
-    "dvValue": 600,
+    "bvValue": 600,
     "description": "Nutraceutical capsules formulated to support balanced cravings, weight management and everyday vitality. Rich in 20 essential minerals, 87 trace minerals, 3 fatty acids (Omega 3, 6, 9), 44 anti-inflammatory compounds, 270 nutrients, 13 essential vitamins, 20 alkaloids, 19 amino acids, 60 antioxidants and 68 xanthones. Intended as a dietary supplement — not to treat or prevent any disease.",
     "benefits": [
       "Effective for erectile dysfunction",

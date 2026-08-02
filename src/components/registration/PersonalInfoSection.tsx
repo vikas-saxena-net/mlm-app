@@ -157,6 +157,27 @@ export default function PersonalInfoSection({
         hint="You must be at least 18 years old"
         {...register("dob")}
       />
+
+      <FormInput
+        label="Aadhaar Number"
+        type="text"
+        required
+        inputMode="numeric"
+        placeholder="12-digit Aadhaar number"
+        maxLength={12}
+        error={errors.aadharNumber?.message}
+        {...register("aadharNumber")}
+      />
+
+      <FormInput
+        label="PAN Card Number"
+        type="text"
+        placeholder="ABCDE1234F"
+        maxLength={10}
+        style={{ textTransform: "uppercase" }}
+        error={errors.pancardNumber?.message}
+        {...register("pancardNumber")}
+      />
     </SectionCard>
   );
 }

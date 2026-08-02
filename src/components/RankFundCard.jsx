@@ -15,11 +15,11 @@ export default function RankFundCard({ fund }) {
       <div className="p-5 space-y-3 text-sm">
         <div className="flex justify-between border-b border-dashed border-slate-200 pb-2">
           <span className="text-slate-500">Self BV</span>
-          <span className="font-semibold text-brand-ink">₹{fund.selfBv}</span>
+          <span className="font-semibold text-brand-ink">{fund.selfBv}</span>
         </div>
         <div className="flex justify-between border-b border-dashed border-slate-200 pb-2">
           <span className="text-slate-500">Team BV</span>
-          <span className="font-semibold text-brand-ink">₹{fund.teamBv}</span>
+          <span className="font-semibold text-brand-ink">{fund.teamBv}</span>
         </div>
         <div className="flex justify-between border-b border-dashed border-slate-200 pb-2">
           <span className="text-slate-500">Point Rule</span>
