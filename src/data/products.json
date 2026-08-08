@@ -54,5 +54,29 @@
       "Helps reduce allergies by controlling histamine release",
       "A food blend that helps keep you from falling ill, so you stay beautiful and attractive"
     ]
+  },
+  {
+    "id": "namaste-farmer",
+    "name": "Namaste Farmer",
+    "category": "Agri Care",
+    "size": "1 Kg Pack",
+    "image": "/products/namaste-farmer.jpeg",
+    "dpValue": 550,
+    "bvValue": 250,
+    "description": "A bio-fertilizer product that is fully soluble in soil, formulated to naturally boost crop yield and revive dormant nutrients so the soil's fertilizing power keeps improving over time. Intended as an agricultural soil input to support healthier, stronger crops.",
+    "benefits": [
+      "A bio-fertilizer product that is completely soluble in soil",
+      "Naturally increases crop yield",
+      "Reactivates dormant nutrients in the soil, further boosting the soil's fertilizing power",
+      "Nourishes every part of the plant — roots, stem, leaves, fruits and flowers — making it healthier and stronger, which increases crop yield",
+      "With continuous use, the soil becomes more fertile and the harvest increases significantly",
+      "Boosts plant immunity, making crops less prone to disease",
+      "For best results, use at least twice during a single crop cycle"
+    ],
+    "usage": [
+      "Low-input crops (paddy, wheat, mustard, Parmal rice, Katila, sorghum fodder/Chari, pearl millet/Bajra, and all types of animal fodder, etc.): use 1 kg per acre",
+      "High-input crops (sugarcane, potato, maize, chilli, kundru/ivy gourd): use 2 kg per acre",
+      "For spray application: use 250g per acre"
+    ]
   }
 ]

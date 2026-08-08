@@ -62,6 +62,25 @@ export default function ProductShowcase({ product, index }) {
           </ul>
         </div>
 
+        {product.usage && product.usage.length > 0 && (
+          <div className="mt-6">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-400">How to Use</p>
+            <ul className="mt-3 space-y-2">
+              {product.usage.map((u) => (
+                <li
+                  key={u}
+                  className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-700"
+                >
+                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-orange/15 text-brand-orange mt-0.5">
+                    <Icon name="drop" className="w-3 h-3" />
+                  </span>
+                  {u}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <Link
           to="/join"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-brand-orange-dark"

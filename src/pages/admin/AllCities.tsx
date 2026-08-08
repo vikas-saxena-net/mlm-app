@@ -25,7 +25,7 @@ export default function AllCities() {
     setLoading(true);
     getAllCities()
       .then(setCities)
-      .catch(() => toast.error("Could not load cities."))
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load cities."))
       .finally(() => setLoading(false));
   };
 

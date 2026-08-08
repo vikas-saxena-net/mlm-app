@@ -16,7 +16,7 @@ export default function AddState() {
   useEffect(() => {
     getCountries()
       .then(setCountries)
-      .catch(() => toast.error("Could not load countries."));
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load countries."));
   }, []);
 
   const handleSubmit = async (e: FormEvent) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { getUserProfile, updateUserRegistration } from "../../services/registrationService";
@@ -66,9 +67,15 @@ const EMPTY_DOCUMENTS: DocumentStatus = {
 
 export default function EditProfile() {
   const { user } = useAuth();
+  const { usersGuid: paramUsersGuid } = useParams<{ usersGuid?: string }>();
+  const isEditingOther = Boolean(paramUsersGuid) && paramUsersGuid !== user?.user_guid;
+  const targetUserGuid = paramUsersGuid || user?.user_guid;
+
   const [activeTab, setActiveTab] = useState<"profile" | "documents">("profile");
   const [form, setForm] = useState<ProfileFormState>(EMPTY_FORM);
   const [usersGuid, setUsersGuid] = useState<string | null>(null);
+  const [profileRoleGuid, setProfileRoleGuid] = useState<string | null>(null);
+  const [profileUserName, setProfileUserName] = useState<string | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormState, string>>>({});
@@ -80,7 +87,12 @@ export default function EditProfile() {
   const [documents, setDocuments] = useState<DocumentStatus>(EMPTY_DOCUMENTS);
 
   useEffect(() => {
-    getCountries().then(setCountries).catch(() => setCountries([]));
+    getCountries()
+      .then(setCountries)
+      .catch((error: ApiErrorShape) => {
+        toast.error(error.message || "Could not load countries.");
+        setCountries([]);
+      });
   }, []);
 
   useEffect(() => {
@@ -88,7 +100,12 @@ export default function EditProfile() {
       setStates([]);
       return;
     }
-    getStates(form.country).then(setStates).catch(() => setStates([]));
+    getStates(form.country)
+      .then(setStates)
+      .catch((error: ApiErrorShape) => {
+        toast.error(error.message || "Could not load states.");
+        setStates([]);
+      });
   }, [form.country]);
 
   useEffect(() => {
@@ -96,17 +113,25 @@ export default function EditProfile() {
       setCities([]);
       return;
     }
-    getCities(form.state).then(setCities).catch(() => setCities([]));
+    getCities(form.state)
+      .then(setCities)
+      .catch((error: ApiErrorShape) => {
+        toast.error(error.message || "Could not load cities.");
+        setCities([]);
+      });
   }, [form.state]);
 
   useEffect(() => {
-    if (!user?.user_guid) {
+    if (!targetUserGuid) {
       setLoadingProfile(false);
       return;
     }
-    getUserProfile(user.user_guid)
+    setLoadingProfile(true);
+    getUserProfile(targetUserGuid)
       .then((profile) => {
         setUsersGuid(profile.usersGuid);
+        setProfileRoleGuid(profile.role_guid ?? null);
+        setProfileUserName(profile.userName ?? null);
         setForm({
           firstName: profile.userFirstName ?? "",
           lastName: profile.userLastName ?? "",
@@ -130,11 +155,11 @@ export default function EditProfile() {
           pancardUrl: profile.pancard_url ?? null,
         });
       })
-      .catch(() => {
-        toast.error("Could not load your existing profile details.");
+      .catch((error: ApiErrorShape) => {
+        toast.error(error.message || "Could not load your existing profile details.");
       })
       .finally(() => setLoadingProfile(false));
-  }, [user?.user_guid]);
+  }, [targetUserGuid]);
 
   const update = (field: keyof ProfileFormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -208,8 +233,9 @@ export default function EditProfile() {
 
   const handleDocumentsSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!usersGuid || !user?.role_guid) {
-      toast.error("Could not determine your account ID. Please re-login and try again.");
+    const roleGuid = profileRoleGuid || user?.role_guid;
+    if (!usersGuid || !roleGuid) {
+      toast.error("Could not determine the account ID. Please re-login and try again.");
       return;
     }
     if (!aadharFrontFile && !aadharBackFile && !pancardFile) {
@@ -221,7 +247,7 @@ export default function EditProfile() {
     try {
       const result = await uploadDocuments({
         usersGuid,
-        roleGuid: user.role_guid,
+        roleGuid,
         aadharFront: aadharFrontFile,
         aadharBack: aadharBackFile,
         pancard: pancardFile,
@@ -260,8 +286,28 @@ export default function EditProfile() {
 
   return (
     <div className="rounded-2xl border border-slate-100 bg-white p-6 md:p-8 shadow-sm">
-      <h2 className="text-xl font-bold text-brand-ink">My Account</h2>
-      <p className="mt-1 text-sm text-slate-500">Manage your profile details and identity documents.</p>
+      {isEditingOther ? (
+        <>
+          <Link
+            to="/admin/users"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-brand-orange"
+          >
+            <Icon name="arrowRight" className="w-3.5 h-3.5 rotate-180" />
+            Back to All Users
+          </Link>
+          <h2 className="mt-3 text-xl font-bold text-brand-ink">
+            Edit Profile — {profileUserName || "User"}
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Viewing and editing this member's profile details and identity documents.
+          </p>
+        </>
+      ) : (
+        <>
+          <h2 className="text-xl font-bold text-brand-ink">My Account</h2>
+          <p className="mt-1 text-sm text-slate-500">Manage your profile details and identity documents.</p>
+        </>
+      )}
 
       <div className="mt-6 flex gap-2 border-b border-slate-100">
         <button

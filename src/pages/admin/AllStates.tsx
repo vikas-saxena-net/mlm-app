@@ -25,7 +25,7 @@ export default function AllStates() {
     setLoading(true);
     getAllStates()
       .then(setStates)
-      .catch(() => toast.error("Could not load states."))
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load states."))
       .finally(() => setLoading(false));
   };
 

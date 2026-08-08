@@ -18,7 +18,7 @@ export default function AddCity() {
   useEffect(() => {
     getCountries()
       .then(setCountries)
-      .catch(() => toast.error("Could not load countries."));
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load countries."));
   }, []);
 
   useEffect(() => {
@@ -29,7 +29,10 @@ export default function AddCity() {
     }
     getStates(countryGuid)
       .then(setStates)
-      .catch(() => setStates([]));
+      .catch((error: ApiErrorShape) => {
+        toast.error(error.message || "Could not load states.");
+        setStates([]);
+      });
   }, [countryGuid]);
 
   const handleSubmit = async (e: FormEvent) => {

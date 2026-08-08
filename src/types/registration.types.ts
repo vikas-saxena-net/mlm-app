@@ -163,6 +163,24 @@ export interface UploadDocumentsResponse {
   pancard_url: string | null;
 }
 
+/** Shape of GET /api/admin/users -> data (one item per user) */
+export interface AdminUserListResponse {
+  usersGuid: string | null;
+  userName: string | null;
+  userFirstName: string | null;
+  userLastName: string | null;
+  emailId: string | null;
+  mobileNumber: number;
+  status: string | null;
+  status_name: string | null;
+  role_guid: string | null;
+  role_name: string | null;
+  createdDate: string;
+  updatedDate: string;
+  createdBy: string | null;
+  updatedBy: string | null;
+}
+
 export interface DuplicateFieldState {
   checking: boolean;
   isDuplicate: boolean | null;

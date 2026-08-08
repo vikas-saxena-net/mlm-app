@@ -67,6 +67,7 @@ export default function App() {
                   <Route path="profile" element={<EditProfile />} />
                   <Route path="change-password" element={<ChangePassword />} />
                   <Route path="users" element={<AdminUsers />} />
+                  <Route path="users/:usersGuid/profile" element={<EditProfile />} />
                 </Route>
               </Route>
 

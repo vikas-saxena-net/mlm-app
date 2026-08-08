@@ -41,11 +41,11 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-white/70">
             <li className="flex items-center gap-2">
               <Icon name="phone" className="w-4 h-4 text-brand-orange shrink-0" />
-              +91 00000 00000
+              +91 9259018706
             </li>
             <li className="flex items-center gap-2">
               <Icon name="mail" className="w-4 h-4 text-brand-orange shrink-0" />
-              support@hiohealth.com
+              hlohealth2026@gmail.com
             </li>
             <li className="flex items-start gap-2">
               <Icon name="mapPin" className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />

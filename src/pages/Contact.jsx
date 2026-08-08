@@ -80,8 +80,8 @@ export default function Contact() {
           </div>
 
           <div className="lg:col-span-2 space-y-4">
-            <InfoCard icon="phone" title="Call Us" text="+91 00000 00000" />
-            <InfoCard icon="mail" title="Email Us" text="support@hiohealth.com" />
+            <InfoCard icon="phone" title="Call Us" text="+91 9259018706" />
+            <InfoCard icon="mail" title="Email Us" text="hlohealth2026@gmail.com" />
             <InfoCard
               icon="mapPin"
               title="Visit Us"

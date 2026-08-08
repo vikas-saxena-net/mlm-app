@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getCities, getCountries, getStates } from "../services/sharedService";
 import type { LookupOption } from "../types/registration.types";
+import type { ApiErrorShape } from "../services/api/httpClient";
 
 export function useLocationData(countryId: string, stateId: string) {
   const [countries, setCountries] = useState<LookupOption[]>([]);
@@ -16,7 +18,9 @@ export function useLocationData(countryId: string, stateId: string) {
     try {
       const data = await getCountries();
       setCountries(data ?? []);
-    } catch {
+    } catch (error) {
+      const apiError = error as ApiErrorShape;
+      toast.error(apiError.message || "Could not load countries.");
       setCountries([]);
     } finally {
       setLoadingCountries(false);
@@ -36,7 +40,11 @@ export function useLocationData(countryId: string, stateId: string) {
     setLoadingStates(true);
     getStates(countryId)
       .then((data) => active && setStates(data ?? []))
-      .catch(() => active && setStates([]))
+      .catch((error: ApiErrorShape) => {
+        if (!active) return;
+        toast.error(error.message || "Could not load states.");
+        setStates([]);
+      })
       .finally(() => active && setLoadingStates(false));
 
     return () => {
@@ -53,7 +61,11 @@ export function useLocationData(countryId: string, stateId: string) {
     setLoadingCities(true);
     getCities(stateId)
       .then((data) => active && setCities(data ?? []))
-      .catch(() => active && setCities([]))
+      .catch((error: ApiErrorShape) => {
+        if (!active) return;
+        toast.error(error.message || "Could not load cities.");
+        setCities([]);
+      })
       .finally(() => active && setLoadingCities(false));
 
     return () => {
