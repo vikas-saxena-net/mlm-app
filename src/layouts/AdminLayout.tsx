@@ -2,6 +2,7 @@ import DashboardLayout, { type DashboardMenuItem } from "./DashboardLayout";
 
 const ADMIN_MENU: DashboardMenuItem[] = [
   { to: "/admin", label: "Dashboard", icon: "home", end: true },
+  { to: "/admin/purchased-product", label: "Purchased Product", icon: "bonus" },
   { to: "/admin/add-state", label: "Add State", icon: "mapPin" },
   { to: "/admin/states", label: "All States", icon: "flag" },
   { to: "/admin/add-city", label: "Add City", icon: "compass" },

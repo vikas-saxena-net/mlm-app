@@ -6,7 +6,7 @@ const cards = [
   { to: "/dashboard/profile", label: "Edit Profile", icon: "users", desc: "Update your account details." },
   { to: "/dashboard/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
   { to: "/dashboard/products", label: "Product List", icon: "gift", desc: "Browse the HIO Health product catalog." },
-  { to: "/dashboard/buy-product", label: "Buy Product", icon: "bonus", desc: "Purchase HIO Health products online." },
+  { to: "/dashboard/purchased-product", label: "Purchased Product", icon: "bonus", desc: "View the products you have ordered." },
 ];
 
 export default function UserDashboard() {

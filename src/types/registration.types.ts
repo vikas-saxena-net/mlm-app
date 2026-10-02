@@ -207,6 +207,83 @@ export interface UploadDocumentsResponse {
   pancard_url: string | null;
 }
 
+/** One cart line inside POST /api/user-registration/checkout */
+export interface CheckoutDetailRequest {
+  product_guid: string;
+  quantity: number;
+  /** Unit price — the API validates total_amount == sum(quantity x amount). */
+  amount: number;
+}
+
+/** Body of POST /api/user-registration/checkout */
+export interface CheckoutRequest {
+  users_guid: string;
+  total_amount: number;
+  payment_mode: string;
+  user_remark?: string;
+  details: CheckoutDetailRequest[];
+}
+
+/** Shape of POST /api/user-registration/checkout -> data */
+export interface CheckoutResponse {
+  id: number;
+  users_guid: string | null;
+  total_amount: number;
+  payment_mode: string | null;
+  payment_status_guid: string | null;
+  item_count: number;
+}
+
+/** Shape of GET /api/shared/payment-statuses -> data (one item per payment status) */
+export interface PaymentStatusResponse {
+  status_guid: string | null;
+  code: string | null;
+  name: string | null;
+  description: string | null;
+  sequence: number;
+}
+
+/** Shape of GET /api/user-registration/purchases -> data (one item per order) */
+export interface PurchaseOrderResponse {
+  main_id: number;
+  users_guid: string | null;
+  user_name: string | null;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  email_id: string | null;
+  mobile_number: number;
+  total_amount: number;
+  payment_mode: string | null;
+  payment_status_guid: string | null;
+  payment_status_code: string | null;
+  payment_status_name: string | null;
+  user_remark: string | null;
+  admin_remark: string | null;
+  approval_date: string | null;
+  created_date: string;
+  item_count: number;
+}
+
+/** Shape of GET /api/user-registration/purchases/{mainId} -> data (one item per order line) */
+export interface PurchaseItemResponse {
+  id: number;
+  main_id: number;
+  product_guid: string | null;
+  product_code: string | null;
+  name: string | null;
+  category: string | null;
+  size: string | null;
+  image: string | null;
+  description: string | null;
+  dp_value: number;
+  bv_value: number;
+  quantity: number;
+  /** Unit price. */
+  amount: number;
+  line_total: number;
+  created_date: string;
+}
+
 /** Shape of GET /api/user-registration/statuses -> data (one item per status) */
 export interface StatusMainResponse {
   status_guid: string | null;

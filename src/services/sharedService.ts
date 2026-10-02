@@ -8,6 +8,7 @@ import type {
   DuplicateCheckField,
   DuplicateCheckResponse,
   LookupOption,
+  PaymentStatusResponse,
   RawLookupItem,
   StateListItem,
   UserDetailsResponse,
@@ -84,4 +85,9 @@ export async function deleteState(guid: string): Promise<unknown> {
 export async function deleteCity(guid: string): Promise<unknown> {
   const response = await httpClient.delete<ApiResponse<unknown>>(`/shared/cities/${encodeURIComponent(guid)}`);
   return unwrapApiResponse(response.data);
+}
+
+export async function getPaymentStatuses(): Promise<PaymentStatusResponse[]> {
+  const response = await httpClient.get<ApiResponse<PaymentStatusResponse[]>>("/shared/payment-statuses");
+  return unwrapApiResponse(response.data) ?? [];
 }

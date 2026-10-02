@@ -24,7 +24,10 @@ import AllProducts from "./pages/admin/AllProducts";
 import EditProduct from "./pages/admin/EditProduct";
 import UserDashboard from "./pages/user/UserDashboard";
 import ProductList from "./pages/user/ProductList";
-import BuyProduct from "./pages/user/BuyProduct";
+import PurchasedProducts from "./pages/shared/PurchasedProducts";
+import PurchaseDetail from "./pages/admin/PurchaseDetail";
+import Cart from "./pages/user/Cart";
+import CheckoutSuccess from "./pages/user/CheckoutSuccess";
 import EditProfile from "./pages/shared/EditProfile";
 import ChangePassword from "./pages/shared/ChangePassword";
 
@@ -74,6 +77,8 @@ export default function App() {
                   <Route path="users/:usersGuid/profile" element={<EditProfile />} />
                   <Route path="products" element={<AllProducts />} />
                   <Route path="products/:guid/edit" element={<EditProduct />} />
+                  <Route path="purchased-product" element={<PurchasedProducts admin />} />
+                  <Route path="purchased-product/:mainId" element={<PurchaseDetail />} />
                 </Route>
               </Route>
 
@@ -83,7 +88,9 @@ export default function App() {
                   <Route path="profile" element={<EditProfile />} />
                   <Route path="change-password" element={<ChangePassword />} />
                   <Route path="products" element={<ProductList />} />
-                  <Route path="buy-product" element={<BuyProduct />} />
+                  <Route path="purchased-product" element={<PurchasedProducts />} />
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="checkout-success" element={<CheckoutSuccess />} />
                 </Route>
               </Route>
             </Routes>

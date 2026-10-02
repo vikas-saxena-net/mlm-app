@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Icon from "../../components/Icon";
 
 const cards = [
+  { to: "/admin/purchased-product", label: "Purchased Product", icon: "bonus", desc: "View every order placed by members." },
   { to: "/admin/add-state", label: "Add State", icon: "mapPin", desc: "Create a new state under a country." },
   { to: "/admin/states", label: "All States", icon: "flag", desc: "View and delete existing states." },
   { to: "/admin/add-city", label: "Add City", icon: "compass", desc: "Create a new city under a state." },
