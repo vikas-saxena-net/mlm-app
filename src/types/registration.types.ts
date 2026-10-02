@@ -67,6 +67,39 @@ export interface CreateCityRequest {
   stateGuid: string;
 }
 
+/** Shape of GET /api/shared/products -> data (one item per product) */
+export interface ProductResponse {
+  productGuid: string;
+  productCode: string | null;
+  name: string | null;
+  category: string | null;
+  size: string | null;
+  image: string | null;
+  dpValue: number;
+  bvValue: number;
+  description: string | null;
+  benefits: string[] | null;
+  usage: string[] | null;
+  status: number;
+  createdDate: string;
+  updatedDate: string;
+  updatedBy: string | null;
+}
+
+/** Maps 1:1 to UpdateProductRequest on the API — PUT /api/products/{guid} */
+export interface UpdateProductRequest {
+  productCode: string;
+  name: string;
+  category?: string;
+  size?: string;
+  image?: string;
+  dpValue: number;
+  bvValue: number;
+  description?: string;
+  benefits?: string[];
+  usage?: string[];
+}
+
 /** Maps 1:1 to CreateUserRegistrationRequest on the API. */
 export interface CreateUserRegistrationRequest {
   userName: string;
@@ -121,11 +154,22 @@ export interface UpdateUserRegistrationRequest {
   status_guid?: string;
 }
 
+/** Sponsor block returned inside GET /api/user-registration/editprofile/{usersGuid} (note the API's "sponser_guid" spelling) */
+export interface SponsorDetailsResponse {
+  sponser_guid: string | null;
+  user_code: string | null;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  email_id: string | null;
+  mobile_number: number;
+}
+
 /** Shape of GET /api/user-registration/editprofile/{usersGuid} -> data */
 export interface UserRegistrationResponse {
   usersGuid: string | null;
   userName: string | null;
   sponsorGuid: string | null;
+  sponsor: SponsorDetailsResponse | null;
   position: string | null;
   userFirstName: string | null;
   userLastName: string | null;
@@ -161,6 +205,15 @@ export interface UploadDocumentsResponse {
   aadhar_front: string | null;
   aadhar_back: string | null;
   pancard_url: string | null;
+}
+
+/** Shape of GET /api/user-registration/statuses -> data (one item per status) */
+export interface StatusMainResponse {
+  status_guid: string | null;
+  code: string | null;
+  name: string | null;
+  description: string | null;
+  sequence: number;
 }
 
 /** Shape of GET /api/admin/users -> data (one item per user) */

@@ -9,6 +9,7 @@ const ADMIN_MENU: DashboardMenuItem[] = [
   { to: "/admin/profile", label: "Edit Profile", icon: "users" },
   { to: "/admin/change-password", label: "Change Password", icon: "shield" },
   { to: "/admin/users", label: "All Users", icon: "target" },
+  { to: "/admin/products", label: "Products", icon: "gift" },
 ];
 
 export default function AdminLayout() {

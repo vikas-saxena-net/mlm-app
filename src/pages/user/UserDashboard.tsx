@@ -5,6 +5,8 @@ import Icon from "../../components/Icon";
 const cards = [
   { to: "/dashboard/profile", label: "Edit Profile", icon: "users", desc: "Update your account details." },
   { to: "/dashboard/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
+  { to: "/dashboard/products", label: "Product List", icon: "gift", desc: "Browse the HIO Health product catalog." },
+  { to: "/dashboard/buy-product", label: "Buy Product", icon: "bonus", desc: "Purchase HIO Health products online." },
 ];
 
 export default function UserDashboard() {

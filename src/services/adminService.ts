@@ -2,8 +2,10 @@ import httpClient from "./api/httpClient";
 import { unwrapApiResponse } from "../utils/apiResponse";
 import type { AdminUserListResponse, ApiResponse } from "../types/registration.types";
 
-export async function getAllUsers(): Promise<AdminUserListResponse[]> {
-  const response = await httpClient.get<ApiResponse<AdminUserListResponse[]>>("/admin/users");
+export async function getAllUsers(statusGuid?: string): Promise<AdminUserListResponse[]> {
+  const response = await httpClient.get<ApiResponse<AdminUserListResponse[]>>("/admin/users", {
+    params: statusGuid ? { status_guid: statusGuid } : undefined,
+  });
   return unwrapApiResponse(response.data) ?? [];
 }
 

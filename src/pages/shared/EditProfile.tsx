@@ -12,7 +12,7 @@ import { getMaxDobForMinAge } from "../../utils/date";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
-import type { LookupOption } from "../../types/registration.types";
+import type { LookupOption, SponsorDetailsResponse } from "../../types/registration.types";
 
 const MAX_DOB = getMaxDobForMinAge(18);
 const GENDER_OPTIONS = ["Male", "Female", "Other"];
@@ -76,6 +76,7 @@ export default function EditProfile() {
   const [usersGuid, setUsersGuid] = useState<string | null>(null);
   const [profileRoleGuid, setProfileRoleGuid] = useState<string | null>(null);
   const [profileUserName, setProfileUserName] = useState<string | null>(null);
+  const [sponsor, setSponsor] = useState<SponsorDetailsResponse | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormState, string>>>({});
@@ -132,6 +133,7 @@ export default function EditProfile() {
         setUsersGuid(profile.usersGuid);
         setProfileRoleGuid(profile.role_guid ?? null);
         setProfileUserName(profile.userName ?? null);
+        setSponsor(profile.sponsor ?? null);
         setForm({
           firstName: profile.userFirstName ?? "",
           lastName: profile.userLastName ?? "",
@@ -333,6 +335,26 @@ export default function EditProfile() {
           Upload Document
         </button>
       </div>
+
+      {activeTab === "profile" && sponsor && (
+        <div className="mt-6 rounded-xl border border-slate-100 bg-slate-50 p-4">
+          <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Sponsor Details</p>
+          <dl className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 text-sm">
+            {[
+              ["User Code", sponsor.user_code],
+              ["First Name", sponsor.user_first_name],
+              ["Last Name", sponsor.user_last_name],
+              ["Email", sponsor.email_id],
+              ["Mobile", sponsor.mobile_number ? String(sponsor.mobile_number) : null],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <dt className="text-xs text-slate-500">{label}</dt>
+                <dd className="font-semibold text-brand-ink break-words">{value || "—"}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
 
       {activeTab === "profile" && (
       <form onSubmit={handleSubmit} className="mt-6 grid sm:grid-cols-2 gap-5">

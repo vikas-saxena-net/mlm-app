@@ -20,7 +20,11 @@ import AddCity from "./pages/admin/AddCity";
 import AllStates from "./pages/admin/AllStates";
 import AllCities from "./pages/admin/AllCities";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AllProducts from "./pages/admin/AllProducts";
+import EditProduct from "./pages/admin/EditProduct";
 import UserDashboard from "./pages/user/UserDashboard";
+import ProductList from "./pages/user/ProductList";
+import BuyProduct from "./pages/user/BuyProduct";
 import EditProfile from "./pages/shared/EditProfile";
 import ChangePassword from "./pages/shared/ChangePassword";
 
@@ -68,6 +72,8 @@ export default function App() {
                   <Route path="change-password" element={<ChangePassword />} />
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="users/:usersGuid/profile" element={<EditProfile />} />
+                  <Route path="products" element={<AllProducts />} />
+                  <Route path="products/:guid/edit" element={<EditProduct />} />
                 </Route>
               </Route>
 
@@ -76,6 +82,8 @@ export default function App() {
                   <Route index element={<UserDashboard />} />
                   <Route path="profile" element={<EditProfile />} />
                   <Route path="change-password" element={<ChangePassword />} />
+                  <Route path="products" element={<ProductList />} />
+                  <Route path="buy-product" element={<BuyProduct />} />
                 </Route>
               </Route>
             </Routes>

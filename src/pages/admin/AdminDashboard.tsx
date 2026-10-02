@@ -10,6 +10,7 @@ const cards = [
   { to: "/admin/profile", label: "Edit Profile", icon: "users", desc: "Update your account details." },
   { to: "/admin/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
   { to: "/admin/users", label: "All Users", icon: "target", desc: "View every registered member." },
+  { to: "/admin/products", label: "Products", icon: "gift", desc: "View and edit existing products." },
 ];
 
 export default function AdminDashboard() {

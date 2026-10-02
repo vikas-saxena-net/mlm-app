@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { deleteUser, getAllUsers } from "../../services/adminService";
+import { getUserStatuses } from "../../services/registrationService";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
-import type { AdminUserListResponse } from "../../types/registration.types";
+import type { AdminUserListResponse, StatusMainResponse } from "../../types/registration.types";
+
+const PAGE_SIZE_OPTIONS = [20, 50, 100, 200];
 
 export default function AdminUsers() {
   const { user } = useAuth();
@@ -14,6 +17,10 @@ export default function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [deletingGuid, setDeletingGuid] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
+  const [statuses, setStatuses] = useState<StatusMainResponse[]>([]);
+  const [statusGuid, setStatusGuid] = useState("");
 
   const filteredUsers = users.filter((u) => {
     const term = filter.trim().toLowerCase();
@@ -27,17 +34,28 @@ export default function AdminUsers() {
     );
   });
 
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pagedUsers = filteredUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
   const loadUsers = () => {
     setLoading(true);
-    getAllUsers()
+    getAllUsers(statusGuid || undefined)
       .then(setUsers)
       .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load users."))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    loadUsers();
+    getUserStatuses()
+      .then(setStatuses)
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load statuses."));
   }, []);
+
+  useEffect(() => {
+    loadUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusGuid]);
 
   const handleDelete = async (target: AdminUserListResponse) => {
     if (!target.usersGuid) return;
@@ -78,11 +96,30 @@ export default function AdminUsers() {
         </button>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-col sm:flex-row gap-3">
+        <select
+          value={statusGuid}
+          onChange={(e) => {
+            setStatusGuid(e.target.value);
+            setPage(1);
+          }}
+          aria-label="Filter by status"
+          className="w-full max-w-[200px] rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-orange focus:outline-none"
+        >
+          <option value="">All statuses</option>
+          {statuses.map((s) => (
+            <option key={s.status_guid} value={s.status_guid ?? ""}>
+              {s.name ?? s.code}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          onChange={(e) => {
+            setFilter(e.target.value);
+            setPage(1);
+          }}
           placeholder="Filter by name, username, email or mobile…"
           className="w-full max-w-xs rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-orange focus:outline-none"
         />
@@ -112,12 +149,12 @@ export default function AdminUsers() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((u, index) => {
+              {pagedUsers.map((u, index) => {
                 const name = `${u.userFirstName ?? ""} ${u.userLastName ?? ""}`.trim() || "—";
                 const isSelf = u.usersGuid === user?.user_guid;
                 return (
                   <tr key={u.usersGuid} className="border-b border-slate-50 last:border-0 hover:bg-slate-50">
-                    <td className="py-3 pr-4 text-slate-500">{index + 1}</td>
+                    <td className="py-3 pr-4 text-slate-500">{(currentPage - 1) * pageSize + index + 1}</td>
                     <td className="py-3 pr-4 font-semibold text-brand-ink">{name}</td>
                     <td className="py-3 pr-4 text-slate-600">{u.userName || "—"}</td>
                     <td className="py-3 pr-4 text-slate-600">{u.emailId || "—"}</td>
@@ -158,6 +195,53 @@ export default function AdminUsers() {
               })}
             </tbody>
           </table>
+
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-slate-500">
+                Showing {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, filteredUsers.length)}{" "}
+                of {filteredUsers.length}
+              </p>
+              <label className="flex items-center gap-1.5 text-xs text-slate-500">
+                Rows per page
+                <select
+                  value={pageSize}
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                    setPage(1);
+                  }}
+                  className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 focus:border-brand-orange focus:outline-none"
+                >
+                  {PAGE_SIZE_OPTIONS.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:border-brand-orange hover:text-brand-orange disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+              >
+                Previous
+              </button>
+              <span className="text-xs font-semibold text-slate-500">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:border-brand-orange hover:text-brand-orange disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

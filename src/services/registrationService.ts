@@ -3,6 +3,7 @@ import { unwrapApiResponse } from "../utils/apiResponse";
 import type {
   ApiResponse,
   CreateUserRegistrationRequest,
+  StatusMainResponse,
   UpdateUserRegistrationRequest,
   UserRegistrationResponse,
 } from "../types/registration.types";
@@ -28,4 +29,9 @@ export async function getUserProfile(usersGuid: string): Promise<UserRegistratio
     `/user-registration/editprofile/${encodeURIComponent(usersGuid)}`
   );
   return unwrapApiResponse(response.data);
+}
+
+export async function getUserStatuses(): Promise<StatusMainResponse[]> {
+  const response = await httpClient.get<ApiResponse<StatusMainResponse[]>>("/user-registration/statuses");
+  return unwrapApiResponse(response.data) ?? [];
 }
