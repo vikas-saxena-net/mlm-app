@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { updatePurchasePayment } from "../../services/adminService";
 import { getPurchaseItems, getPurchases } from "../../services/registrationService";
 import { getPaymentStatuses } from "../../services/sharedService";
 import Spinner from "../../components/common/Spinner";
@@ -24,17 +25,12 @@ export default function PurchaseDetail() {
   const [items, setItems] = useState<PurchaseItemResponse[]>([]);
   const [statuses, setStatuses] = useState<PaymentStatusResponse[]>([]);
   const [statusGuid, setStatusGuid] = useState("");
+  const [adminRemark, setAdminRemark] = useState("");
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
-  useEffect(() => {
-    const id = Number(mainId);
-    if (!mainId || Number.isNaN(id)) {
-      setNotFound(true);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
+  const loadOrder = (id: number) =>
     // There is no "get one order" endpoint, so the order header is found in the full list.
     Promise.all([getPurchases(), getPurchaseItems(id), getPaymentStatuses()])
       .then(([orders, orderItems, paymentStatuses]) => {
@@ -48,8 +44,18 @@ export default function PurchaseDetail() {
         setStatuses(paymentStatuses);
         setStatusGuid(found.payment_status_guid ?? "");
       })
-      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load order details."))
-      .finally(() => setLoading(false));
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load order details."));
+
+  useEffect(() => {
+    const id = Number(mainId);
+    if (!mainId || Number.isNaN(id)) {
+      setNotFound(true);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    loadOrder(id).finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainId]);
 
   if (loading) {
@@ -70,6 +76,40 @@ export default function PurchaseDetail() {
       </div>
     );
   }
+
+  const statusLabel = (guid: string | null) =>
+    (statuses.find((s) => s.status_guid === guid)?.name ?? "").trim().toLowerCase();
+  // An admin can settle a Pending payment as Success or Failed; that reveals the remark box and the update button.
+  const canUpdatePayment =
+    statusLabel(order.payment_status_guid) === "pending" && ["success", "failed"].includes(statusLabel(statusGuid));
+
+  // The remark is mandatory before the payment can be updated.
+  const canSubmit = canUpdatePayment && adminRemark.trim().length > 0;
+
+  const handleUpdatePayment = async () => {
+    if (!order.users_guid) {
+      toast.error("Could not determine the order owner. Please reload the page and try again.");
+      return;
+    }
+    setUpdating(true);
+    try {
+      await updatePurchasePayment(order.main_id, {
+        // The order owner's guid (as returned by GET /user-registration/purchases), not the admin's.
+        users_guid: order.users_guid,
+        payment_status_guid: statusGuid,
+        admin_remark: adminRemark.trim(),
+        approval_date: new Date().toISOString(),
+      });
+      toast.success("Payment updated successfully!");
+      setAdminRemark("");
+      await loadOrder(order.main_id);
+    } catch (error) {
+      const apiError = error as ApiErrorShape;
+      toast.error(apiError.message || "Failed to update payment. Please try again.");
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   const fullName = `${order.user_first_name ?? ""} ${order.user_last_name ?? ""}`.trim();
   const itemsTotal = items.reduce((sum, item) => sum + item.line_total, 0);
@@ -174,10 +214,45 @@ export default function PurchaseDetail() {
             </option>
           ))}
         </select>
-        <p className="mt-1.5 text-xs text-slate-400">
-          Saving a new payment status isn't available yet — the backend has no API for it.
-        </p>
       </div>
+
+      {canUpdatePayment && (
+        <div className="mt-5 max-w-xl">
+          <label htmlFor="admin-remark" className="text-sm font-semibold text-brand-ink">
+            Admin Remark<span className="text-red-500 ml-0.5">*</span>
+          </label>
+          <textarea
+            id="admin-remark"
+            rows={3}
+            value={adminRemark}
+            onChange={(e) => setAdminRemark(e.target.value)}
+            placeholder="Add a remark about this payment decision"
+            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+          />
+          {!adminRemark.trim() && (
+            <p className="mt-1.5 text-xs text-slate-400">An admin remark is required to update the payment.</p>
+          )}
+        </div>
+      )}
+
+      <button
+        type="button"
+        onClick={handleUpdatePayment}
+        disabled={!canSubmit || updating}
+        className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand-orange px-7 py-3 text-sm font-bold text-white shadow-md transition hover:bg-brand-orange-dark disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {updating ? (
+          <>
+            <Spinner className="w-4 h-4" />
+            Updating...
+          </>
+        ) : (
+          <>
+            Update Payment
+            <Icon name="arrowRight" className="w-4 h-4" />
+          </>
+        )}
+      </button>
     </div>
   );
 }

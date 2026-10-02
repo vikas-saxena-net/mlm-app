@@ -234,6 +234,15 @@ export interface CheckoutResponse {
   item_count: number;
 }
 
+/** Body of PUT /api/admin/purchases/{mainId}/payment */
+export interface UpdatePaymentRequest {
+  /** The order owner's users_guid (PurchaseOrderResponse.users_guid) - NOT the logged-in admin's guid. */
+  users_guid: string;
+  payment_status_guid: string;
+  admin_remark: string;
+  approval_date: string;
+}
+
 /** Shape of GET /api/shared/payment-statuses -> data (one item per payment status) */
 export interface PaymentStatusResponse {
   status_guid: string | null;
