@@ -4,13 +4,15 @@ import Icon from "../../components/Icon";
 
 const cards = [
   { to: "/admin/purchased-product", label: "Purchased Product", icon: "bonus", desc: "View every order placed by members." },
+  { to: "/admin/create-genealogy", label: "Create Genealogy", icon: "pair", desc: "Active members still waiting for a user code." },
+  { to: "/admin/show-genealogy", label: "Show Genealogy", icon: "users", desc: "See the binary tree, three levels at a time." },
   { to: "/admin/add-state", label: "Add State", icon: "mapPin", desc: "Create a new state under a country." },
   { to: "/admin/states", label: "All States", icon: "flag", desc: "View and delete existing states." },
   { to: "/admin/add-city", label: "Add City", icon: "compass", desc: "Create a new city under a state." },
   { to: "/admin/cities", label: "All Cities", icon: "storefront", desc: "View and delete existing cities." },
   { to: "/admin/profile", label: "Edit Profile", icon: "users", desc: "Update your account details." },
   { to: "/admin/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
-  { to: "/admin/users", label: "All Users", icon: "target", desc: "View every registered member." },
+  { to: "/admin/users", label: "Users List", icon: "target", desc: "View every registered member." },
   { to: "/admin/products", label: "Products", icon: "gift", desc: "View and edit existing products." },
 ];
 

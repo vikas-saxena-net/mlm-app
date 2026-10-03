@@ -83,7 +83,7 @@ export default function AdminUsers() {
     <div className="rounded-2xl border border-slate-100 bg-white p-6 md:p-8 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-brand-ink">All Users</h2>
+          <h2 className="text-xl font-bold text-brand-ink">Users List</h2>
           <p className="mt-1 text-sm text-slate-500">{users.length} registered member(s).</p>
         </div>
         <button

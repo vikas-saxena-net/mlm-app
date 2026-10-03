@@ -5,6 +5,7 @@ import type {
   CityListItem,
   CreateCityRequest,
   CreateStateRequest,
+  DownlineResponse,
   DuplicateCheckField,
   DuplicateCheckResponse,
   LookupOption,
@@ -23,6 +24,19 @@ function toLookupOptions(items: RawLookupItem[] | null): LookupOption[] {
 export async function getSponsorDetails(userCode: string): Promise<UserDetailsResponse> {
   const response = await httpClient.get<ApiResponse<UserDetailsResponse>>(
     `/shared/getuserdetails/${encodeURIComponent(userCode)}`
+  );
+  return unwrapApiResponse(response.data);
+}
+
+/**
+ * A user plus everyone beneath them in the upline tree, at every depth. Requires login; an admin may request
+ * any user's tree, a normal user only their own (the API returns 403 otherwise). maxLevel limits how many
+ * levels below the user come back (e.g. 3).
+ */
+export async function getDownline(sponserGuid: string, maxLevel?: number): Promise<DownlineResponse> {
+  const response = await httpClient.get<ApiResponse<DownlineResponse>>(
+    `/shared/downline/${encodeURIComponent(sponserGuid)}`,
+    { params: maxLevel ? { max_level: maxLevel } : undefined }
   );
   return unwrapApiResponse(response.data);
 }

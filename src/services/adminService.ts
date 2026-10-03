@@ -1,6 +1,24 @@
 import httpClient from "./api/httpClient";
 import { unwrapApiResponse } from "../utils/apiResponse";
-import type { AdminUserListResponse, ApiResponse, UpdatePaymentRequest } from "../types/registration.types";
+import type {
+  AdminUserListResponse,
+  ApiResponse,
+  UpdateGenealogyRequest,
+  UpdateGenealogyResponse,
+  UpdatePaymentRequest,
+} from "../types/registration.types";
+
+/** Places a member in the genealogy: sets their upline and Left/Right position, and assigns a user_code on first placement. Admin only. */
+export async function updateGenealogy(
+  usersGuid: string,
+  payload: UpdateGenealogyRequest
+): Promise<UpdateGenealogyResponse> {
+  const response = await httpClient.put<ApiResponse<UpdateGenealogyResponse>>(
+    `/admin/genealogy/${encodeURIComponent(usersGuid)}`,
+    payload
+  );
+  return unwrapApiResponse(response.data);
+}
 
 export async function getAllUsers(statusGuid?: string): Promise<AdminUserListResponse[]> {
   const response = await httpClient.get<ApiResponse<AdminUserListResponse[]>>("/admin/users", {

@@ -157,11 +157,55 @@ export interface UpdateUserRegistrationRequest {
 /** Sponsor block returned inside GET /api/user-registration/editprofile/{usersGuid} (note the API's "sponser_guid" spelling) */
 export interface SponsorDetailsResponse {
   sponser_guid: string | null;
-  user_code: string | null;
+  user_name: string;
+  /** Numeric code assigned when the sponsor was placed in the genealogy; null if they have none. */
+  user_code: number | null;
   user_first_name: string | null;
   user_last_name: string | null;
   email_id: string | null;
   mobile_number: number;
+}
+
+/** Upline block returned inside GET /api/user-registration/editprofile/{usersGuid}. Unlike the sponsor block, user_name and the numeric user_code are separate fields. */
+export interface UplinerDetailsResponse {
+  upliner_guid: string;
+  user_name: string;
+  /** Numeric code assigned when the upline was placed in the genealogy; null if they have none. */
+  user_code: number | null;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  email_id: string | null;
+  mobile_number: number;
+}
+
+/** One descendant in GET /api/shared/downline/{sponserGuid} -> data.members (flat; build the tree from upliner_guid) */
+export interface DownlineMemberResponse {
+  users_guid: string;
+  user_name: string;
+  /** Numeric code assigned when the member was placed in the genealogy. */
+  user_code: number | null;
+  mobile_number: number;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  /** users_guid of this member's upline (parent in the tree). */
+  upliner_guid: string;
+  position: string | null;
+  /** 1 = directly under the requested user, 2 = one level further down, and so on. */
+  level: number;
+}
+
+/** Shape of GET /api/shared/downline/{sponserGuid} -> data (the user plus everyone beneath them). Login required; admin may request any user. */
+export interface DownlineResponse {
+  users_guid: string;
+  user_name: string;
+  user_code: number | null;
+  mobile_number: number;
+  /** users_guid of this user's own upline (one level up); null at the top of the tree or when not placed. */
+  upliner_guid: string | null;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  total_members: number;
+  members: DownlineMemberResponse[];
 }
 
 /** Shape of GET /api/user-registration/editprofile/{usersGuid} -> data */
@@ -170,6 +214,12 @@ export interface UserRegistrationResponse {
   userName: string | null;
   sponsorGuid: string | null;
   sponsor: SponsorDetailsResponse | null;
+  /** users_guid of this member's upline; null until they are placed in the genealogy. */
+  upliner_guid: string | null;
+  upliner: UplinerDetailsResponse | null;
+  /** This member's own numeric user code; null until they are placed. */
+  user_code: number | null;
+  /** "Left" or "Right": the side under the upline. */
   position: string | null;
   userFirstName: string | null;
   userLastName: string | null;
@@ -266,6 +316,24 @@ export interface VerifyRazorpayPaymentResponse {
   user_status_updated: boolean;
 }
 
+/** Body of PUT /api/admin/genealogy/{usersGuid} */
+export interface UpdateGenealogyRequest {
+  /** users_guid of the chosen upline. */
+  upliner_guid: string;
+  /** "Left" or "Right". */
+  position: string;
+}
+
+/** Shape of PUT /api/admin/genealogy/{usersGuid} -> data */
+export interface UpdateGenealogyResponse {
+  users_guid: string;
+  upliner_guid: string;
+  position: string;
+  user_code: number;
+  /** True when this call assigned the user_code (the member's first placement). */
+  user_code_assigned: boolean;
+}
+
 /** Body of PUT /api/admin/purchases/{mainId}/payment */
 export interface UpdatePaymentRequest {
   /** The order owner's users_guid (PurchaseOrderResponse.users_guid) - NOT the logged-in admin's guid. */
@@ -337,6 +405,8 @@ export interface StatusMainResponse {
 /** Shape of GET /api/admin/users -> data (one item per user) */
 export interface AdminUserListResponse {
   usersGuid: string | null;
+  /** Numeric code assigned when the member is placed in the genealogy; null until then. */
+  user_code?: number | null;
   userName: string | null;
   userFirstName: string | null;
   userLastName: string | null;

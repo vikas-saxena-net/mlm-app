@@ -12,7 +12,7 @@ import { getMaxDobForMinAge } from "../../utils/date";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
-import type { LookupOption, SponsorDetailsResponse } from "../../types/registration.types";
+import type { LookupOption, SponsorDetailsResponse, UplinerDetailsResponse } from "../../types/registration.types";
 
 const MAX_DOB = getMaxDobForMinAge(18);
 const GENDER_OPTIONS = ["Male", "Female", "Other"];
@@ -77,6 +77,8 @@ export default function EditProfile() {
   const [profileRoleGuid, setProfileRoleGuid] = useState<string | null>(null);
   const [profileUserName, setProfileUserName] = useState<string | null>(null);
   const [sponsor, setSponsor] = useState<SponsorDetailsResponse | null>(null);
+  const [upliner, setUpliner] = useState<UplinerDetailsResponse | null>(null);
+  const [profilePosition, setProfilePosition] = useState<string | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormState, string>>>({});
@@ -134,6 +136,8 @@ export default function EditProfile() {
         setProfileRoleGuid(profile.role_guid ?? null);
         setProfileUserName(profile.userName ?? null);
         setSponsor(profile.sponsor ?? null);
+        setUpliner(profile.upliner ?? null);
+        setProfilePosition(profile.position ?? null);
         setForm({
           firstName: profile.userFirstName ?? "",
           lastName: profile.userLastName ?? "",
@@ -295,7 +299,7 @@ export default function EditProfile() {
             className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-brand-orange"
           >
             <Icon name="arrowRight" className="w-3.5 h-3.5 rotate-180" />
-            Back to All Users
+            Back to Users List
           </Link>
           <h2 className="mt-3 text-xl font-bold text-brand-ink">
             Edit Profile — {profileUserName || "User"}
@@ -337,23 +341,34 @@ export default function EditProfile() {
       </div>
 
       {activeTab === "profile" && sponsor && (
-        <div className="mt-6 rounded-xl border border-slate-100 bg-slate-50 p-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Sponsor Details</p>
-          <dl className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 text-sm">
-            {[
-              ["User Code", sponsor.user_code],
-              ["First Name", sponsor.user_first_name],
-              ["Last Name", sponsor.user_last_name],
-              ["Email", sponsor.email_id],
-              ["Mobile", sponsor.mobile_number ? String(sponsor.mobile_number) : null],
-            ].map(([label, value]) => (
-              <div key={label}>
-                <dt className="text-xs text-slate-500">{label}</dt>
-                <dd className="font-semibold text-brand-ink break-words">{value || "—"}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <RelatedUserDetails
+          title="Sponsor Details"
+          className="mt-6"
+          user={{
+            userCode: sponsor.user_code,
+            userName: sponsor.user_name,
+            firstName: sponsor.user_first_name,
+            lastName: sponsor.user_last_name,
+            email: sponsor.email_id,
+            mobile: sponsor.mobile_number,
+          }}
+        />
+      )}
+
+      {activeTab === "profile" && upliner && (
+        <RelatedUserDetails
+          title="Upliner Details"
+          className="mt-4"
+          user={{
+            userCode: upliner.user_code,
+            userName: upliner.user_name,
+            firstName: upliner.user_first_name,
+            lastName: upliner.user_last_name,
+            email: upliner.email_id,
+            mobile: upliner.mobile_number,
+          }}
+          extraRows={[["Position under Upliner", profilePosition]]}
+        />
       )}
 
       {activeTab === "profile" && (
@@ -554,6 +569,47 @@ interface DocumentSlotProps {
   existingUrl: string | null;
   file: File | null;
   onChange: (file: File | null) => void;
+}
+
+interface RelatedUserDetailsProps {
+  title: string;
+  className?: string;
+  user: {
+    userCode: number | null;
+    userName: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+    mobile: number | null;
+  };
+  /** Extra label/value rows shown after the standard ones (e.g. the member's position under an upliner). */
+  extraRows?: [string, string | null][];
+}
+
+/** Sponsor and Upliner details share one layout: User Code, Username, Name (first + last combined), Email, Mobile. */
+function RelatedUserDetails({ title, className = "", user, extraRows = [] }: RelatedUserDetailsProps) {
+  const rows: [string, string | null][] = [
+    ["User Code", user.userCode != null ? String(user.userCode) : null],
+    ["Username", user.userName],
+    ["Name", `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || null],
+    ["Email", user.email],
+    ["Mobile", user.mobile ? String(user.mobile) : null],
+    ...extraRows,
+  ];
+
+  return (
+    <div className={`rounded-xl border border-slate-100 bg-slate-50 p-4 ${className}`}>
+      <p className="text-xs font-bold uppercase tracking-wide text-slate-400">{title}</p>
+      <dl className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 text-sm">
+        {rows.map(([label, value]) => (
+          <div key={label}>
+            <dt className="text-xs text-slate-500">{label}</dt>
+            <dd className="font-semibold text-brand-ink break-words">{value || "—"}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
 }
 
 function DocumentSlot({ label, existingUrl, file, onChange }: DocumentSlotProps) {

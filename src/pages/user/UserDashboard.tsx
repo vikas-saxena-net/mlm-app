@@ -7,6 +7,7 @@ const cards = [
   { to: "/dashboard/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
   { to: "/dashboard/products", label: "Product List", icon: "gift", desc: "Browse the HIO Health product catalog." },
   { to: "/dashboard/purchased-product", label: "Purchased Product", icon: "bonus", desc: "View the products you have ordered." },
+  { to: "/dashboard/show-genealogy", label: "Show Genealogy", icon: "users", desc: "See your binary tree, three levels at a time." },
 ];
 
 export default function UserDashboard() {

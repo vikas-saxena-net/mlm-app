@@ -26,6 +26,9 @@ import UserDashboard from "./pages/user/UserDashboard";
 import ProductList from "./pages/user/ProductList";
 import PurchasedProducts from "./pages/shared/PurchasedProducts";
 import PurchaseDetail from "./pages/admin/PurchaseDetail";
+import CreateGenealogy from "./pages/admin/CreateGenealogy";
+import CreateGenealogyUser from "./pages/admin/CreateGenealogyUser";
+import ShowGenealogy from "./pages/admin/ShowGenealogy";
 import Cart from "./pages/user/Cart";
 import CheckoutSuccess from "./pages/user/CheckoutSuccess";
 import EditProfile from "./pages/shared/EditProfile";
@@ -79,6 +82,10 @@ export default function App() {
                   <Route path="products/:guid/edit" element={<EditProduct />} />
                   <Route path="purchased-product" element={<PurchasedProducts admin />} />
                   <Route path="purchased-product/:mainId" element={<PurchaseDetail />} />
+                  <Route path="create-genealogy" element={<CreateGenealogy />} />
+                  <Route path="create-genealogy/:usersGuid" element={<CreateGenealogyUser />} />
+                  <Route path="show-genealogy" element={<ShowGenealogy />} />
+                  <Route path="show-genealogy/:usersGuid" element={<ShowGenealogy />} />
                 </Route>
               </Route>
 
@@ -91,6 +98,8 @@ export default function App() {
                   <Route path="purchased-product" element={<PurchasedProducts />} />
                   <Route path="cart" element={<Cart />} />
                   <Route path="checkout-success" element={<CheckoutSuccess />} />
+                  <Route path="show-genealogy" element={<ShowGenealogy />} />
+                  <Route path="show-genealogy/:usersGuid" element={<ShowGenealogy />} />
                 </Route>
               </Route>
             </Routes>
