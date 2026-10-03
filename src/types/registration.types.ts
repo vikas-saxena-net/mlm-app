@@ -234,6 +234,38 @@ export interface CheckoutResponse {
   item_count: number;
 }
 
+/** Shape of POST /api/payments/razorpay/order -> data (everything needed to open Razorpay Checkout) */
+export interface RazorpayOrderResponse {
+  main_id: number;
+  key_id: string;
+  razorpay_order_id: string;
+  /** Amount in paise. */
+  amount: number;
+  currency: string;
+  merchant_name: string;
+  description: string;
+  prefill_name: string | null;
+  prefill_email: string | null;
+  prefill_contact: string | null;
+}
+
+/** Body of POST /api/payments/razorpay/verify - the values Razorpay Checkout returns after payment. */
+export interface VerifyRazorpayPaymentRequest {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+/** Shape of POST /api/payments/razorpay/verify -> data */
+export interface VerifyRazorpayPaymentResponse {
+  main_id: number;
+  razorpay_payment_id: string;
+  payment_status_guid: string;
+  total_amount: number;
+  user_status_guid: string | null;
+  user_status_updated: boolean;
+}
+
 /** Body of PUT /api/admin/purchases/{mainId}/payment */
 export interface UpdatePaymentRequest {
   /** The order owner's users_guid (PurchaseOrderResponse.users_guid) - NOT the logged-in admin's guid. */

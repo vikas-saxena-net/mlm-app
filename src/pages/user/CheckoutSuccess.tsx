@@ -4,15 +4,21 @@ import type { CheckoutResponse } from "../../types/registration.types";
 
 export default function CheckoutSuccess() {
   const location = useLocation();
-  const order = (location.state as { order?: CheckoutResponse } | null)?.order;
+  const state = location.state as { order?: CheckoutResponse; paid?: boolean } | null;
+  const order = state?.order;
+  const paid = state?.paid === true;
 
   return (
     <div className="rounded-2xl border border-slate-100 bg-white p-8 md:p-12 text-center shadow-sm">
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-brand-green">
         <Icon name="check" className="w-8 h-8" strokeWidth={2.5} />
       </div>
-      <h2 className="mt-5 text-2xl font-extrabold text-brand-ink">Order placed successfully!</h2>
-      <p className="mt-2 text-sm text-slate-500">Thank you for your purchase.</p>
+      <h2 className="mt-5 text-2xl font-extrabold text-brand-ink">
+        {paid ? "Payment successful!" : "Order placed successfully!"}
+      </h2>
+      <p className="mt-2 text-sm text-slate-500">
+        {paid ? "Your payment was received. Thank you for your purchase." : "Thank you for your purchase."}
+      </p>
 
       {order && (
         <dl className="mx-auto mt-6 grid max-w-sm grid-cols-2 gap-x-6 gap-y-3 rounded-xl bg-slate-50 p-5 text-left text-sm">

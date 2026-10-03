@@ -3,9 +3,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { checkout } from "../../services/registrationService";
+import { createRazorpayOrder, verifyRazorpayPayment } from "../../services/paymentService";
+import { openRazorpayCheckout, type RazorpayCheckoutError } from "../../utils/razorpay";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
+import type { CheckoutResponse } from "../../types/registration.types";
 
 export interface CartItem {
   productGuid: string;
@@ -28,6 +31,9 @@ export default function Cart() {
   );
   const [paymentMode, setPaymentMode] = useState(PAYMENT_MODES[0]);
   const [remark, setRemark] = useState("");
+  // The Pending order created by an online attempt that was cancelled or failed. A retry pays for this
+  // same order instead of creating a duplicate; changing the cart invalidates it.
+  const [pendingOrder, setPendingOrder] = useState<CheckoutResponse | null>(null);
 
   const isOffline = paymentMode === "Offline";
   // A remark is mandatory for offline payments.
@@ -38,6 +44,7 @@ export default function Cart() {
   const handleQuantityChange = (productGuid: string, quantity: number) => {
     const next = items.map((item) => (item.productGuid === productGuid ? { ...item, quantity } : item));
     setItems(next);
+    setPendingOrder(null);
     // Keep the edited quantities in history state so they survive a page refresh.
     navigate(location.pathname, { replace: true, state: { items: next } });
   };
@@ -50,23 +57,45 @@ export default function Cart() {
 
     setSubmitting(true);
     try {
-      const order = await checkout({
-        users_guid: user.user_guid,
-        total_amount: total,
-        payment_mode: paymentMode,
-        // The remark box only exists (and is mandatory) for offline payments.
-        user_remark: isOffline ? remark.trim() : undefined,
-        details: items.map((item) => ({
-          product_guid: item.productGuid,
-          quantity: item.quantity,
-          // The API checks total_amount == sum(quantity x amount), so this is the unit price.
-          amount: item.price,
-        })),
-      });
-      navigate("/dashboard/checkout-success", { replace: true, state: { order } });
+      // Offline: just record the order. Online: reuse the Pending order from an earlier attempt if there is one.
+      const order =
+        (!isOffline ? pendingOrder : null) ??
+        (await checkout({
+          users_guid: user.user_guid,
+          total_amount: total,
+          payment_mode: paymentMode,
+          // The remark box only exists (and is mandatory) for offline payments.
+          user_remark: isOffline ? remark.trim() : undefined,
+          details: items.map((item) => ({
+            product_guid: item.productGuid,
+            quantity: item.quantity,
+            // The API checks total_amount == sum(quantity x amount), so this is the unit price.
+            amount: item.price,
+          })),
+        }));
+
+      if (isOffline) {
+        navigate("/dashboard/checkout-success", { replace: true, state: { order } });
+        return;
+      }
+
+      setPendingOrder(order);
+
+      // Online: Razorpay. The server decides the amount; the signed result is verified server-side
+      // before the order is marked paid.
+      const razorpayOrder = await createRazorpayOrder(order.id);
+      const paymentResult = await openRazorpayCheckout(razorpayOrder);
+      await verifyRazorpayPayment(paymentResult);
+
+      setPendingOrder(null);
+      navigate("/dashboard/checkout-success", { replace: true, state: { order, paid: true } });
     } catch (error) {
-      const apiError = error as ApiErrorShape;
-      toast.error(apiError.message || "Checkout failed. Please try again.");
+      const checkoutError = error as Partial<RazorpayCheckoutError> & Partial<ApiErrorShape>;
+      if (checkoutError.dismissed) {
+        toast.error("Payment cancelled. Your order is saved - press Pay Now to try again.");
+      } else {
+        toast.error(checkoutError.message || "Checkout failed. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -196,7 +225,7 @@ export default function Cart() {
           </>
         ) : (
           <>
-            Checkout
+            {isOffline ? "Checkout" : "Pay Now"}
             <Icon name="arrowRight" className="w-6 h-6" />
           </>
         )}
