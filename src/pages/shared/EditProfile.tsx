@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { getUserProfile, updateUserRegistration } from "../../services/registrationService";
@@ -67,6 +67,7 @@ const EMPTY_DOCUMENTS: DocumentStatus = {
 
 export default function EditProfile() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { usersGuid: paramUsersGuid } = useParams<{ usersGuid?: string }>();
   const isEditingOther = Boolean(paramUsersGuid) && paramUsersGuid !== user?.user_guid;
   const targetUserGuid = paramUsersGuid || user?.user_guid;
@@ -224,6 +225,8 @@ export default function EditProfile() {
         pincode: form.pincode.trim() || undefined,
       });
       toast.success("Profile updated successfully!");
+      // Opened from the admin's users list (/admin/users/:usersGuid/profile): go back to that list.
+      if (paramUsersGuid) navigate("/admin/users");
     } catch (error) {
       const apiError = error as ApiErrorShape;
       toast.error(apiError.message || "Failed to update profile. Please try again.");
