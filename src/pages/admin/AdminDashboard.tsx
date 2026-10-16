@@ -13,6 +13,7 @@ const cards = [
   { to: "/admin/profile", label: "Edit Profile", icon: "users", desc: "Update your account details." },
   { to: "/admin/change-password", label: "Change Password", icon: "shield", desc: "Update your login password." },
   { to: "/admin/users", label: "Users List", icon: "target", desc: "View every registered member." },
+  { to: "/admin/products/new", label: "Add Product", icon: "gift", desc: "Add a new product to the catalog." },
   { to: "/admin/products", label: "Products", icon: "gift", desc: "View and edit existing products." },
 ];
 

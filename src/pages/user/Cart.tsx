@@ -13,8 +13,10 @@ import type { CheckoutResponse } from "../../types/registration.types";
 export interface CartItem {
   productGuid: string;
   name: string;
-  /** Unit price — the product's BV value. */
+  /** Unit price: the product's DP value. */
   price: number;
+  /** Business volume per unit (BV). Not charged; it decides Enrollment and Activation. */
+  bv: number;
   quantity: number;
 }
 
@@ -40,6 +42,7 @@ export default function Cart() {
   const canCheckout = !isOffline || remark.trim().length > 0;
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalBv = items.reduce((sum, item) => sum + item.bv * item.quantity, 0);
 
   const handleQuantityChange = (productGuid: string, quantity: number) => {
     const next = items.map((item) => (item.productGuid === productGuid ? { ...item, quantity } : item));
@@ -130,12 +133,13 @@ export default function Cart() {
       <p className="mt-1 text-sm text-slate-500">Review your selected products, adjust quantities, then checkout.</p>
 
       <div className="mt-6 overflow-x-auto">
-        <table className="w-full min-w-[480px] text-left text-sm">
+        <table className="w-full min-w-[560px] text-left text-sm">
           <thead>
             <tr className="border-b border-slate-100 text-xs font-bold uppercase tracking-wide text-slate-500">
               <th className="py-3 pr-4">#</th>
               <th className="py-3 pr-4">Product</th>
-              <th className="py-3 pr-4 text-right">Price (BV)</th>
+              <th className="py-3 pr-4 text-right">Price (DP)</th>
+              <th className="py-3 pr-4 text-right">BV</th>
               <th className="py-3 pr-4 text-right">Quantity</th>
               <th className="py-3 text-right">Amount</th>
             </tr>
@@ -146,6 +150,7 @@ export default function Cart() {
                 <td className="py-3 pr-4 text-slate-500">{index + 1}</td>
                 <td className="py-3 pr-4 font-semibold text-brand-ink">{item.name}</td>
                 <td className="py-3 pr-4 text-right text-slate-600">{item.price}</td>
+                <td className="py-3 pr-4 text-right text-slate-600">{item.bv * item.quantity}</td>
                 <td className="py-3 pr-4 text-right">
                   <select
                     value={item.quantity}
@@ -166,10 +171,16 @@ export default function Cart() {
           </tbody>
           <tfoot>
             <tr>
-              <td colSpan={4} className="pt-4 pr-4 text-right text-sm font-bold text-slate-500">
-                Total Amount
+              <td colSpan={5} className="pt-4 pr-4 text-right text-sm font-bold text-slate-500">
+                Total Amount (DP)
               </td>
               <td className="pt-4 text-right text-lg font-extrabold text-brand-orange">{total}</td>
+            </tr>
+            <tr>
+              <td colSpan={5} className="pt-1 pr-4 text-right text-xs font-semibold text-slate-500">
+                Total BV (Enrollment at 600, Active at 1,200)
+              </td>
+              <td className="pt-1 text-right text-sm font-bold text-brand-green">{totalBv}</td>
             </tr>
           </tfoot>
         </table>

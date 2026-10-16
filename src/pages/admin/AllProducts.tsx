@@ -41,14 +41,23 @@ export default function AllProducts() {
           <h2 className="text-xl font-bold text-brand-ink">All Products</h2>
           <p className="mt-1 text-sm text-slate-500">{products.length} product(s) on record.</p>
         </div>
-        <button
-          type="button"
-          onClick={loadProducts}
-          className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 transition hover:border-brand-orange hover:text-brand-orange"
-        >
-          <Icon name="refresh" className="w-3.5 h-3.5" />
-          Refresh
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/admin/products/new"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-orange-dark"
+          >
+            <Icon name="gift" className="w-3.5 h-3.5" />
+            Add Product
+          </Link>
+          <button
+            type="button"
+            onClick={loadProducts}
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 transition hover:border-brand-orange hover:text-brand-orange"
+          >
+            <Icon name="refresh" className="w-3.5 h-3.5" />
+            Refresh
+          </button>
+        </div>
       </div>
 
       <div className="mt-6">

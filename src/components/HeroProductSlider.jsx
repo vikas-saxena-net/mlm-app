@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import products from "../data/products.json";
+import { usePublicProducts } from "../hooks/usePublicProducts";
+import { resolveProductImageUrl } from "../utils/productImage";
 
 export default function HeroProductSlider({ autoPlayMs = 4500 }) {
-  const [index, setIndex] = useState(0);
+  const products = usePublicProducts();
+  const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = products.length;
+  // The list can change length once the live products load, so keep the slide inside it.
+  const index = count > 0 ? slide % count : 0;
   const product = products[index];
 
   useEffect(() => {
     if (paused || count <= 1) return undefined;
-    const id = setInterval(() => setIndex((i) => (i + 1) % count), autoPlayMs);
+    const id = setInterval(() => setSlide((i) => (i + 1) % count), autoPlayMs);
     return () => clearInterval(id);
   }, [paused, count, autoPlayMs]);
+
+  if (!product) return null;
 
   return (
     <div
@@ -25,7 +31,7 @@ export default function HeroProductSlider({ autoPlayMs = 4500 }) {
           {products.map((p, i) => (
             <img
               key={p.id}
-              src={p.image}
+              src={resolveProductImageUrl(p.image)}
               alt={p.name}
               className={`absolute inset-0 h-full w-full object-contain p-6 transition-opacity duration-700 group-hover:scale-105 group-hover:duration-300 ${
                 i === index ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -60,7 +66,7 @@ export default function HeroProductSlider({ autoPlayMs = 4500 }) {
             <button
               key={p.id}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={() => setSlide(i)}
               aria-label={`Show ${p.name}`}
               className={`h-2 rounded-full transition-all ${
                 i === index ? "w-6 bg-brand-orange" : "w-2 bg-slate-300 hover:bg-slate-400"

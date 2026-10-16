@@ -91,13 +91,14 @@ export async function getAllCities(): Promise<CityListItem[]> {
   return unwrapApiResponse(response.data) ?? [];
 }
 
+// POST .../delete instead of DELETE: the production server's firewall blocks PUT and DELETE.
 export async function deleteState(guid: string): Promise<unknown> {
-  const response = await httpClient.delete<ApiResponse<unknown>>(`/shared/states/${encodeURIComponent(guid)}`);
+  const response = await httpClient.post<ApiResponse<unknown>>(`/shared/states/${encodeURIComponent(guid)}/delete`);
   return unwrapApiResponse(response.data);
 }
 
 export async function deleteCity(guid: string): Promise<unknown> {
-  const response = await httpClient.delete<ApiResponse<unknown>>(`/shared/cities/${encodeURIComponent(guid)}`);
+  const response = await httpClient.post<ApiResponse<unknown>>(`/shared/cities/${encodeURIComponent(guid)}/delete`);
   return unwrapApiResponse(response.data);
 }
 

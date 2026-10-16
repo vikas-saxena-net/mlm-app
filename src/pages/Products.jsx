@@ -2,7 +2,7 @@ import Icon from "../components/Icon";
 import SectionHeading from "../components/SectionHeading";
 import JoinBanner from "../components/JoinBanner";
 import ProductShowcase from "../components/ProductShowcase";
-import products from "../data/products.json";
+import { usePublicProducts } from "../hooks/usePublicProducts";
 
 const categories = [
   {
@@ -33,6 +33,8 @@ const badges = [
 ];
 
 export default function Products() {
+  const products = usePublicProducts();
+
   return (
     <div>
       <section className="bg-gradient-to-br from-orange-50 to-green-50 py-16">

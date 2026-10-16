@@ -185,7 +185,7 @@ export default function PurchasedProducts({ admin = false }: PurchasedProductsPr
                                   <tr className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
                                     <th className="py-2 pr-4">Product</th>
                                     <th className="py-2 pr-4">Category</th>
-                                    <th className="py-2 pr-4 text-right">Price (BV)</th>
+                                    <th className="py-2 pr-4 text-right">Price (DP)</th>
                                     <th className="py-2 pr-4 text-right">Quantity</th>
                                     <th className="py-2 text-right">Amount</th>
                                   </tr>

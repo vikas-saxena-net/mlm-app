@@ -86,6 +86,9 @@ export interface ProductResponse {
   updatedBy: string | null;
 }
 
+/** Maps 1:1 to CreateProductRequest on the API - POST /api/products (same fields as an update). */
+export type CreateProductRequest = UpdateProductRequest;
+
 /** Maps 1:1 to UpdateProductRequest on the API — PUT /api/products/{guid} */
 export interface UpdateProductRequest {
   productCode: string;
@@ -314,6 +317,17 @@ export interface VerifyRazorpayPaymentResponse {
   total_amount: number;
   user_status_guid: string | null;
   user_status_updated: boolean;
+}
+
+/** One item of GET /api/admin/genealogy/open-slots -> data: a placed member who still has a free Left and/or Right side. */
+export interface OpenUplineResponse {
+  users_guid: string;
+  user_name: string;
+  user_code: number | null;
+  user_first_name: string | null;
+  user_last_name: string | null;
+  /** The sides still open under this member: "Left", "Right", or both. */
+  free_positions: string[];
 }
 
 /** Body of PUT /api/admin/genealogy/{usersGuid} */

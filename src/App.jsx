@@ -22,6 +22,7 @@ import AllCities from "./pages/admin/AllCities";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AllProducts from "./pages/admin/AllProducts";
 import EditProduct from "./pages/admin/EditProduct";
+import AddProduct from "./pages/admin/AddProduct";
 import UserDashboard from "./pages/user/UserDashboard";
 import ProductList from "./pages/user/ProductList";
 import PurchasedProducts from "./pages/shared/PurchasedProducts";
@@ -79,6 +80,7 @@ export default function App() {
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="users/:usersGuid/profile" element={<EditProfile />} />
                   <Route path="products" element={<AllProducts />} />
+                  <Route path="products/new" element={<AddProduct />} />
                   <Route path="products/:guid/edit" element={<EditProduct />} />
                   <Route path="purchased-product" element={<PurchasedProducts admin />} />
                   <Route path="purchased-product/:mainId" element={<PurchaseDetail />} />

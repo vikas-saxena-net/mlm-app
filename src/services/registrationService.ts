@@ -21,8 +21,9 @@ export async function updateUserRegistration(
   usersGuid: string,
   payload: UpdateUserRegistrationRequest
 ): Promise<unknown> {
-  const response = await httpClient.put<ApiResponse<unknown>>(
-    `/user-registration/${encodeURIComponent(usersGuid)}`,
+  // POST .../update instead of PUT: the production server's firewall blocks PUT and DELETE.
+  const response = await httpClient.post<ApiResponse<unknown>>(
+    `/user-registration/${encodeURIComponent(usersGuid)}/update`,
     payload
   );
   return unwrapApiResponse(response.data);

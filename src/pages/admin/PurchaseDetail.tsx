@@ -165,7 +165,7 @@ export default function PurchaseDetail() {
               <th className="py-3 pr-4">Product</th>
               <th className="py-3 pr-4">Code</th>
               <th className="py-3 pr-4">Category</th>
-              <th className="py-3 pr-4 text-right">Price (BV)</th>
+              <th className="py-3 pr-4 text-right">Price (DP)</th>
               <th className="py-3 pr-4 text-right">Quantity</th>
               <th className="py-3 text-right">Amount</th>
             </tr>

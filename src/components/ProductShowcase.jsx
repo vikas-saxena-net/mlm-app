@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "./Icon";
+import { resolveProductImageUrl } from "../utils/productImage";
 
 const PANEL_TONES = [
   { bg: "from-orange-50 to-orange-100/40", ribbon: "bg-brand-orange" },
@@ -22,7 +23,7 @@ export default function ProductShowcase({ product, index }) {
           {product.category}
         </span>
         <img
-          src={product.image}
+          src={resolveProductImageUrl(product.image)}
           alt={product.name}
           className="h-64 md:h-80 w-full max-w-sm object-contain drop-shadow-xl"
         />
@@ -45,6 +46,7 @@ export default function ProductShowcase({ product, index }) {
 
         <p className="mt-5 text-sm leading-relaxed text-slate-600">{product.description}</p>
 
+        {product.benefits && product.benefits.length > 0 && (
         <div className="mt-6">
           <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Key Benefits</p>
           <ul className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
@@ -61,6 +63,7 @@ export default function ProductShowcase({ product, index }) {
             ))}
           </ul>
         </div>
+        )}
 
         {product.usage && product.usage.length > 0 && (
           <div className="mt-6">

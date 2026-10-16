@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getAllProducts } from "../../services/productService";
+import { resolveProductImageUrl } from "../../utils/productImage";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
@@ -32,7 +33,8 @@ export default function ProductList() {
       .map((p) => ({
         productGuid: p.productGuid,
         name: p.name ?? "",
-        price: p.bvValue,
+        price: p.dpValue,
+        bv: p.bvValue,
         quantity: Number(quantities[p.productGuid]),
       }));
     if (items.length === 0) return;
@@ -67,7 +69,7 @@ export default function ProductList() {
             >
               {p.image && (
                 <div className="flex items-center justify-center bg-white p-4">
-                  <img src={p.image} alt={p.name ?? ""} className="h-32 w-full object-contain" />
+                  <img src={resolveProductImageUrl(p.image)} alt={p.name ?? ""} className="h-32 w-full object-contain" />
                 </div>
               )}
               <div className="p-4 flex-1 flex flex-col">
@@ -81,11 +83,11 @@ export default function ProductList() {
 
                 <div className="mt-auto pt-3 flex items-center justify-between gap-2">
                   <div className="flex gap-2">
-                    <span className="rounded-md bg-white px-2 py-1 text-[10px] font-bold text-slate-600">
-                      DP&nbsp;<span className="text-brand-ink">{p.dpValue}</span>
-                    </span>
                     <span className="rounded-md bg-orange-50 px-2 py-1 text-[10px] font-bold text-brand-orange">
-                      Price (BV)&nbsp;<span className="text-brand-ink">{p.bvValue}</span>
+                      Price (DP)&nbsp;<span className="text-brand-ink">{p.dpValue}</span>
+                    </span>
+                    <span className="rounded-md bg-white px-2 py-1 text-[10px] font-bold text-slate-600">
+                      BV&nbsp;<span className="text-brand-ink">{p.bvValue}</span>
                     </span>
                   </div>
                   <select

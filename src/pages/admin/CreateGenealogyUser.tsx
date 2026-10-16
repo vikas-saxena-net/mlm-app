@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { updateGenealogy } from "../../services/adminService";
+import { getOpenUplines, updateGenealogy } from "../../services/adminService";
 import { getUserProfile } from "../../services/registrationService";
 import { getDownline } from "../../services/sharedService";
 import Spinner from "../../components/common/Spinner";
 import Icon from "../../components/Icon";
 import type { ApiErrorShape } from "../../services/api/httpClient";
-import type { DownlineResponse, UserRegistrationResponse } from "../../types/registration.types";
+import type { DownlineResponse, OpenUplineResponse, UserRegistrationResponse } from "../../types/registration.types";
 
 // A binary tree: every upline has at most one member on each side.
 const POSITIONS = ["Left", "Right"];
@@ -28,6 +28,7 @@ export default function CreateGenealogyUser() {
   const [profile, setProfile] = useState<UserRegistrationResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [downline, setDownline] = useState<DownlineResponse | null>(null);
+  const [openUplines, setOpenUplines] = useState<OpenUplineResponse[]>([]);
   const [downlineLoading, setDownlineLoading] = useState(false);
   const [uplineGuid, setUplineGuid] = useState("");
   const [position, setPosition] = useState("");
@@ -60,7 +61,28 @@ export default function CreateGenealogyUser() {
       .finally(() => setDownlineLoading(false));
   }, [sponsorGuid]);
 
+  // A member with no sponsor has no tree to pick from, so offer every placed member who still has a free side.
+  const hasLoadedProfile = Boolean(profile);
+  useEffect(() => {
+    if (!hasLoadedProfile || sponsorGuid || !usersGuid) {
+      setOpenUplines([]);
+      return;
+    }
+    setDownlineLoading(true);
+    getOpenUplines(usersGuid)
+      .then(setOpenUplines)
+      .catch((error: ApiErrorShape) => toast.error(error.message || "Could not load the available uplines."))
+      .finally(() => setDownlineLoading(false));
+  }, [hasLoadedProfile, sponsorGuid, usersGuid]);
+
   const uplineOptions = useMemo<UplineOption[]>(() => {
+    if (!sponsorGuid) {
+      return openUplines.map((o) => ({
+        guid: o.users_guid,
+        label: `${fullName(o.user_first_name, o.user_last_name) || "—"} (${o.user_name})${o.user_code != null ? ` - #${o.user_code}` : ""} - open: ${o.free_positions.join(" & ")}`,
+        takenPositions: POSITIONS.filter((p) => !o.free_positions.includes(p)).map((p) => p.toLowerCase()),
+      }));
+    }
     if (!downline) return [];
 
     const members = downline.members;
@@ -102,7 +124,7 @@ export default function CreateGenealogyUser() {
           takenPositions: taken(m.users_guid),
         })),
     ];
-  }, [downline, usersGuid]);
+  }, [downline, openUplines, sponsorGuid, usersGuid]);
 
   const selectedUpline = uplineOptions.find((o) => o.guid === uplineGuid);
   const freePositions = selectedUpline
@@ -252,7 +274,8 @@ export default function CreateGenealogyUser() {
 
       {!sponsorGuid && (
         <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-800">
-          This user has no sponsor, so there is no tree to choose an upline from.
+          This user has no sponsor, so the Upline list shows every placed member who still has a free Left or Right
+          side. The open sides are shown beside each name.
         </div>
       )}
 
